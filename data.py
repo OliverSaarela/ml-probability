@@ -20,7 +20,12 @@ def main():
     LABEL_COLUMN =  'Winner'
     LABELS = [train_df['Player']]
 
-    
+    unique = train_df['Player'].unique()
+
+    dict = {x:index+1 for index, x in enumerate(unique)}
+
+    train_df['Player id'] = train_df['Player'].map(dict)
+    print(train_df)
 
     def get_dataset(file_path, **kwargs):
 
@@ -46,8 +51,6 @@ def main():
                 print("{:20s}: {}".format(key,value.numpy()))
 
     show_batch(raw_train_data)
-
-    
 
 if __name__ == "__main__":
     main()
