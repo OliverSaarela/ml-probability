@@ -11,12 +11,12 @@ from pathlib import Path
 import os
 
 def main():
-    train_data = Path('data/2000-2018-short.csv')
+    train_data = Path('data/2000-2018-supershort.csv')
     test_data = Path('')
 
     
     df = pd.read_csv(train_data)
-    print(df.head())
+    print(df)
 
 if __name__ == "__main__":
     main()
