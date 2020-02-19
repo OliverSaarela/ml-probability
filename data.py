@@ -14,8 +14,17 @@ def main():
     
     train_df = pd.read_csv(train_data_path)
     test_df = pd.read_csv(test_data_path)
-    print(train_df.head())
-    print(test_df.head())
+    #print(train_df.head())
+    #print(test_df.head())
+
+    train_df.Player[ train_df.Player.isnull() ] = 0
+    
+    cols = ['Player 1', 'Player 2', 'Winner', 'surface']
+
+    t = pd.get_dummies(train_df, columns=['Player'])
+    print(t)
+
+    #print(train_df)
 
     LABEL_COLUMN =  'Winner'
     LABELS = [train_df['Player']]
