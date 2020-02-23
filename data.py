@@ -17,17 +17,12 @@ def main():
     #print(train_df.head())
     #print(test_df.head())
 
-    train_df.Player[ train_df.Player.isnull() ] = 0
-    
-    cols = ['Player 1', 'Player 2', 'Winner', 'surface']
+    train_df.Player[ train_df.Player.isnull() ] = ''
 
-    t = pd.get_dummies(train_df, columns=['Player'])
-    print(t)
-
-    #print(train_df)
+    print(np.unique(train_df['surface']))
 
     LABEL_COLUMN =  'Winner'
-    LABELS = [train_df['Player']]
+    LABELS = np.unique(train_df['Player'])
 
     
 
@@ -56,6 +51,24 @@ def main():
 
     show_batch(raw_train_data)
 
+    example_batch = next(iter(raw_train_data))
+
+    CATEGORIES = {
+        'Player 1': LABELS,
+        'Player 2': LABELS,
+        'surface': np.unique(train_df['surface'])
+    }
+
+    categorical_columns = []
+    for feature, vocab in CATEGORIES.items():
+        cat_col = tf.feature_column.categorical_column_with_vocabulary_list(
+            key = feature, vocabulary_list = vocab)
+        categorical_columns.append(tf.feature_column.indicator_column(cat_col))
+
+    print(categorical_columns)
+
+    categorical_layer = tf.keras.layers.DenseFeatures(categorical_columns)
+    print(categorical_layer(example_batch).np()[0])
     
 
 if __name__ == "__main__":
