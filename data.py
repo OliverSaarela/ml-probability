@@ -68,7 +68,7 @@ def main():
     print(categorical_columns)
 
     categorical_layer = tf.keras.layers.DenseFeatures(categorical_columns)
-    print(categorical_layer(example_batch).np()[0])
+    print(categorical_layer(example_batch).numpy()[0])
     
 
 if __name__ == "__main__":
