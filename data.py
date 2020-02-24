@@ -6,6 +6,7 @@ import functools
 import numpy as np
 import pandas as pd
 import tensorflow as tf
+import json
 
 def main():
     train_data_path = 'data/2000-2018-supershort.csv'
@@ -21,7 +22,7 @@ def main():
     train_df.Player[ train_df.Player.isnull() ] = ''
     
 
-    #print(np.unique(train_df['surface']))
+    #print(pd.get_dummies(train_df))
 
     LABEL_COLUMN =  'Winner'
     LABELS = np.unique(train_df['Player'])
@@ -49,6 +50,8 @@ def main():
             for key, value in batch.items():
                 print("{:20s}: {}".format(key,value.numpy()))
 
+    #print(raw_test_data)
+
     show_batch(raw_train_data)
 
 
@@ -65,9 +68,11 @@ def main():
         categorical_columns.append(tf.feature_column.indicator_column(cat_col))
 
     #print(categorical_columns)
+    example_batch = next(iter(raw_train_data))
 
+    print(example_batch)
     categorical_layer = tf.keras.layers.DenseFeatures(categorical_columns)
-    #print(categorical_layer(raw_train_data).np()[0])
+    print(categorical_layer(example_batch).np()[0])
     
 
     #Building the model
