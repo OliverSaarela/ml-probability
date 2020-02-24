@@ -17,14 +17,14 @@ def main():
     #print(train_df.head())
     #print(test_df.head())
 
+    #Null changed to empty
     train_df.Player[ train_df.Player.isnull() ] = ''
+    
 
-    print(np.unique(train_df['surface']))
+    #print(np.unique(train_df['surface']))
 
     LABEL_COLUMN =  'Winner'
     LABELS = np.unique(train_df['Player'])
-
-    
 
     def get_dataset(file_path, **kwargs):
 
@@ -39,7 +39,7 @@ def main():
             )
         return dataset
 
-    SELECT_COLUMNS = ['Player 1', 'Player 2', 'Winner', 'surface']
+    SELECT_COLUMNS = ['Player_1', 'Player_2', 'Winner', 'Surface']
 
     raw_train_data = get_dataset(train_data_path, select_columns=SELECT_COLUMNS)
     raw_test_data = get_dataset(test_data_path, select_columns=SELECT_COLUMNS)
@@ -51,12 +51,11 @@ def main():
 
     show_batch(raw_train_data)
 
-    example_batch = next(iter(raw_train_data))
 
     CATEGORIES = {
-        'Player 1': LABELS,
-        'Player 2': LABELS,
-        'surface': np.unique(train_df['surface'])
+        'Player_1': LABELS,
+        'Player_2': LABELS,
+        'Surface': np.unique(train_df['Surface'])
     }
 
     categorical_columns = []
@@ -65,11 +64,34 @@ def main():
             key = feature, vocabulary_list = vocab)
         categorical_columns.append(tf.feature_column.indicator_column(cat_col))
 
-    print(categorical_columns)
+    #print(categorical_columns)
 
     categorical_layer = tf.keras.layers.DenseFeatures(categorical_columns)
-    print(categorical_layer(example_batch).numpy()[0])
+    #print(categorical_layer(raw_train_data).np()[0])
     
+
+    #Building the model
+    model = tf.keras.Sequential([
+        categorical_layer,
+        tf.keras.layers.Dense(128, activation = 'relu'),
+        tf.keras.layers.Dense(128, activation = 'relu'),
+        tf.keras.layers.Dense(1)
+    ])
+
+    model.compile(
+        loss = tf.keras.losses.BinaryCrossentropy(from_logits = True),
+        optimizer = 'adam',
+        metrics = ['accuracy']
+    )
+
+    train_data = raw_train_data.shuffle(500)
+    test_data = raw_test_data
+
+    model.fit(train_data, epochs = 5)
+
+    test_loss, test_accuracy = model.evaluate(test_data)
+
+    print('\n\nTest Loss {}, Test Accuracy {}'.format(test_loss, test_accuracy))
 
 if __name__ == "__main__":
     main()
