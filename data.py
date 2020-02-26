@@ -9,7 +9,7 @@ import tensorflow as tf
 from sklearn.model_selection import train_test_split
 
 def main():
-    train_data_path = 'data/2000-2018-supershort.csv'
+    train_data_path = 'data/2000-2020-supershort.csv'
     test_data_path = 'data/2019-2020-supershort.csv'
 
     
@@ -20,7 +20,7 @@ def main():
     
 
     # Null changed to empty
-    train_df.Player[ train_df.Player.isnull() ] = ''
+    #train_df.Player[ train_df.Player.isnull() ] = ''
     # If Player 1 wins winner = 1 and if Player 2 wins winner = 0
     train_df['Winner'].loc[train_df['Winner'] == train_df['Player_1']] = 1
     train_df['Winner'].loc[train_df['Winner'] == train_df['Player_2']] = 0
@@ -31,8 +31,6 @@ def main():
     
     # Change Player_1, Player_2 and surface to onehotencoding
     numeric_train_df = pd.get_dummies(train_df, prefix=['Player_1', 'Player_2', 'Surface'], columns=['Player_1', 'Player_2', 'Surface'])
-    numeric_train_df['Player'] = pd.Categorical(numeric_train_df['Player'])
-    numeric_train_df['Player'] = numeric_train_df.Player.cat.codes
 
     #numeric_test_df = pd.get_dummies(test_df, prefix=['Player_1', 'Player_2', 'Surface'], columns=['Player_1', 'Player_2', 'Surface'])
     #numeric_test_df['Player'] = pd.Categorical(numeric_test_df['Player'])
