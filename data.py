@@ -23,6 +23,9 @@ def main():
     # If Player 1 wins winner = 1 and if Player 2 wins winner = 0
     train_df['Winner'].loc[train_df['Winner'] == train_df['Player_1']] = 1
     train_df['Winner'].loc[train_df['Winner'] == train_df['Player_2']] = 0
+
+    test_df['Winner'].loc[test_df['Winner'] == test_df['Player_1']] = 1
+    test_df['Winner'].loc[test_df['Winner'] == test_df['Player_2']] = 0
     
     
     # Change Player_1, Player_2 and surface to onehotencoding
@@ -35,34 +38,15 @@ def main():
     numeric_test_df['Player'] = numeric_test_df.Player.cat.codes
 
     numeric_train_df['Winner'] = pd.to_numeric(train_df['Winner'], downcast = 'integer')
-    print(numeric_train_df.dtypes)
+    numeric_test_df['Winner'] = pd.to_numeric(test_df['Winner'], downcast = 'integer')
+    print(numeric_train_df)
 
-    target = numeric_train_df.pop('Winner')
+    real = numeric_train_df.to_csv()
 
-    dataset = tf.data.Dataset.from_tensor_slices((numeric_train_df.values, target.values))
+    test = pd.read_csv(real)
 
-    for feat, targ in dataset.take(5):
-        print ('Features: {}, Target: {}'.format(feat, targ))
-
-    train_dataset = dataset.shuffle(len(numeric_train_df)).batch(1)
-
-    def get_compiled_model():
-        model = tf.keras.Sequential([
-            tf.keras.layers.Dense(10, activation = 'relu'),
-            tf.keras.layers.Dense(10, activation = 'relu'),
-            tf.keras.layers.Dense(1)
-        ])
-
-        model.compile(
-            optimizer = 'adam',
-            loss = tf.keras.losses.BinaryCrossentropy(from_logits = True),
-            metrics = ['accuracy']
-        )
-
-        return model
-
-    model = get_compiled_model()
-    model.fit(train_dataset, epochs = 1)
+    print(test.head())
+    
 
 
 if __name__ == "__main__":
