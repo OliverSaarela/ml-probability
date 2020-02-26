@@ -28,11 +28,21 @@ def main():
     numeric_train_df['Winner'] = pd.to_numeric(train_df['Winner'], downcast = 'integer')
     print(numeric_train_df)
 
+    # Splitting dataframe to train and test data
+    train, test = train_test_split(numeric_train_df, test_size = 0.1)
 
-    target = numeric_train_df.pop('Winner')
-    dataset = tf.data.Dataset.from_tensor_slices((numeric_train_df.values, target.values))
 
-    train_dataset = dataset.shuffle(len(numeric_train_df)).batch(1)
+    target = train.pop('Winner')
+    dataset = tf.data.Dataset.from_tensor_slices((train.values, target.values))
+
+    test_target = test.pop('Winner')
+    dataset_2 = tf.data.Dataset.from_tensor_slices((test.values, test_target.values))
+
+    for feat, targ in dataset.take(5):
+        print ('Features: {}, Target: {}'.format(feat, targ))
+
+    train_dataset = dataset.shuffle(len(train)).batch(1)
+    test_dataset = dataset_2.shuffle(len(test)).batch(1)
 
     
     def get_compiled_model():
@@ -50,6 +60,10 @@ def main():
 
     model = get_compiled_model()
     model.fit(train_dataset, epochs=1)
+
+    test_loss, test_accuracy = model.evaluate(test_dataset)
+
+    print('\n\nTest Loss {}, Test Accuracy {}'.format(test_loss, test_accuracy))
 
 if __name__ == "__main__":
     main()
