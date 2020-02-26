@@ -29,8 +29,8 @@ def main():
     print(numeric_train_df)
 
 
-    train_target = numeric_train_df.pop('Winner')
-    dataset = tf.data.Dataset.from_tensor_slices((numeric_train_df.values, train_target.values))
+    target = numeric_train_df.pop('Winner')
+    dataset = tf.data.Dataset.from_tensor_slices((numeric_train_df.values, target.values))
 
     train_dataset = dataset.shuffle(len(numeric_train_df)).batch(1)
 
