@@ -16,82 +16,54 @@ def main():
     test_df = pd.read_csv(test_data_path)
     #print(train_df.head())
     #print(test_df.head())
+    
 
-    #Null changed to empty
+    # Null changed to empty
     train_df.Player[ train_df.Player.isnull() ] = ''
+    # If Player 1 wins winner = 1 and if Player 2 wins winner = 0
+    train_df['Winner'].loc[train_df['Winner'] == train_df['Player_1']] = 1
+    train_df['Winner'].loc[train_df['Winner'] == train_df['Player_2']] = 0
     
-
-    #print(np.unique(train_df['surface']))
-
-    LABEL_COLUMN =  'Winner'
-    LABELS = np.unique(train_df['Player'])
-
-    def get_dataset(file_path, **kwargs):
-
-        dataset = tf.data.experimental.make_csv_dataset(
-            file_path,
-            batch_size = 5, #Small during testing, Make bigger when done.
-            label_name = LABEL_COLUMN,
-            na_value = '?',
-            num_epochs = 1,
-            ignore_errors = True,
-            **kwargs
-            )
-        return dataset
-
-    SELECT_COLUMNS = ['Player_1', 'Player_2', 'Winner', 'Surface']
-
-    raw_train_data = get_dataset(train_data_path, select_columns=SELECT_COLUMNS)
-    raw_test_data = get_dataset(test_data_path, select_columns=SELECT_COLUMNS)
-
-    def show_batch(dataset):
-        for batch, label in dataset.take(1):
-            for key, value in batch.items():
-                print("{:20s}: {}".format(key,value.numpy()))
-
-    show_batch(raw_train_data)
-
-
-    CATEGORIES = {
-        'Player_1': LABELS,
-        'Player_2': LABELS,
-        'Surface': np.unique(train_df['Surface'])
-    }
-
-    categorical_columns = []
-    for feature, vocab in CATEGORIES.items():
-        cat_col = tf.feature_column.categorical_column_with_vocabulary_list(
-            key = feature, vocabulary_list = vocab)
-        categorical_columns.append(tf.feature_column.indicator_column(cat_col))
-
-    #print(categorical_columns)
-
-    categorical_layer = tf.keras.layers.DenseFeatures(categorical_columns)
-    #print(categorical_layer(raw_train_data).np()[0])
     
+    # Change Player_1, Player_2 and surface to onehotencoding
+    numeric_train_df = pd.get_dummies(train_df, prefix=['Player_1', 'Player_2', 'Surface'], columns=['Player_1', 'Player_2', 'Surface'])
+    numeric_train_df['Player'] = pd.Categorical(numeric_train_df['Player'])
+    numeric_train_df['Player'] = numeric_train_df.Player.cat.codes
 
-    #Building the model
-    model = tf.keras.Sequential([
-        categorical_layer,
-        tf.keras.layers.Dense(128, activation = 'relu'),
-        tf.keras.layers.Dense(128, activation = 'relu'),
-        tf.keras.layers.Dense(1)
-    ])
+    numeric_test_df = pd.get_dummies(test_df, prefix=['Player_1', 'Player_2', 'Surface'], columns=['Player_1', 'Player_2', 'Surface'])
+    numeric_test_df['Player'] = pd.Categorical(numeric_test_df['Player'])
+    numeric_test_df['Player'] = numeric_test_df.Player.cat.codes
 
-    model.compile(
-        loss = tf.keras.losses.BinaryCrossentropy(from_logits = True),
-        optimizer = 'adam',
-        metrics = ['accuracy']
-    )
+    numeric_train_df['Winner'] = pd.to_numeric(train_df['Winner'], downcast = 'integer')
+    print(numeric_train_df.dtypes)
 
-    train_data = raw_train_data.shuffle(500)
-    test_data = raw_test_data
+    target = numeric_train_df.pop('Winner')
 
-    model.fit(train_data, epochs = 5)
+    dataset = tf.data.Dataset.from_tensor_slices((numeric_train_df.values, target.values))
 
-    test_loss, test_accuracy = model.evaluate(test_data)
+    for feat, targ in dataset.take(5):
+        print ('Features: {}, Target: {}'.format(feat, targ))
 
-    print('\n\nTest Loss {}, Test Accuracy {}'.format(test_loss, test_accuracy))
+    train_dataset = dataset.shuffle(len(numeric_train_df)).batch(1)
+
+    def get_compiled_model():
+        model = tf.keras.Sequential([
+            tf.keras.layers.Dense(10, activation = 'relu'),
+            tf.keras.layers.Dense(10, activation = 'relu'),
+            tf.keras.layers.Dense(1)
+        ])
+
+        model.compile(
+            optimizer = 'adam',
+            loss = tf.keras.losses.BinaryCrossentropy(from_logits = True),
+            metrics = ['accuracy']
+        )
+
+        return model
+
+    model = get_compiled_model()
+    model.fit(train_dataset, epochs = 1)
+
 
 if __name__ == "__main__":
     main()
