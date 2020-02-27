@@ -59,7 +59,7 @@ def main():
         return model
 
     model = get_compiled_model()
-    model.fit(train_dataset, epochs=1)
+    model.fit(train_dataset, epochs=2)
 
     test_loss, test_accuracy = model.evaluate(test_dataset)
 
