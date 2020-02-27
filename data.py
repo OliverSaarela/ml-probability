@@ -6,108 +6,62 @@ import functools
 import numpy as np
 import pandas as pd
 import tensorflow as tf
+from sklearn.model_selection import train_test_split
 
 def main():
-    train_data_path = 'data/2000-2018-supershort.csv'
-    test_data_path = 'data/2019-2020-supershort.csv'
+    train_data_path = 'data/2000-2020-supershort.csv'
 
     
     train_df = pd.read_csv(train_data_path)
-    test_df = pd.read_csv(test_data_path)
-    #print(train_df.head())
-    #print(test_df.head())
-
-    #Null changed to empty
-    train_df.Player[ train_df.Player.isnull() ] = ''
     
 
-    #print(pd.get_dummies(train_df))
-
-    LABEL_COLUMN =  'Winner'
-    LABELS = np.unique(train_df['Player'])
-
-    def get_dataset(file_path, **kwargs):
-
-        dataset = tf.data.experimental.make_csv_dataset(
-            file_path,
-            batch_size = 5, #Small during testing, Make bigger when done.
-            label_name = LABEL_COLUMN,
-            na_value = '?',
-            num_epochs = 1,
-            ignore_errors = True,
-            **kwargs
-            )
-        return dataset
-
-    SELECT_COLUMNS = ['Player_1', 'Player_2', 'Winner', 'Surface']
-
-    raw_train_data = get_dataset(train_data_path, select_columns=SELECT_COLUMNS)
-    raw_test_data = get_dataset(test_data_path, select_columns=SELECT_COLUMNS)
-
-    def show_batch(dataset):
-        for batch, label in dataset.take(1):
-            for key, value in batch.items():
-                print("{:20s}: {}".format(key,value.numpy()))
-
-    #print(raw_test_data)
-
-    show_batch(raw_train_data)
-
-
-    CATEGORIES = {
-        'Player_1': LABELS,
-        'Player_2': LABELS,
-        'Surface': np.unique(train_df['Surface'])
-    }
-
-    categorical_columns = []
-    for feature, vocab in CATEGORIES.items():
-        cat_col = tf.feature_column.categorical_column_with_vocabulary_list(
-            key = feature, vocabulary_list = vocab)
-        categorical_columns.append(tf.feature_column.indicator_column(cat_col))
-
-    #print(categorical_columns)
-    train_batch, labels_batch = next(iter(raw_train_data))
-    
-
-    def pack(features, label):
-        return tf.stack(list(features.values()), axis = -1), label
-
-    packed_train_data = raw_train_data.map(pack)
-    packed_test_data = raw_test_data.map(pack)
-
-    print('#################################')
-    print(packed_train_data)
-    print('#################################')
-
-
-
-
-    categorical_layer = tf.keras.layers.DenseFeatures(categorical_columns)
-    print(categorical_layer(train_batch).numpy()[0])
+    # If Player 1 wins winner = 1 and if Player 2 wins winner = 0
+    train_df['Winner'].loc[train_df['Winner'] == train_df['Player_1']] = 1
+    train_df['Winner'].loc[train_df['Winner'] == train_df['Player_2']] = 0
 
     
+    
+    # Change Player_1, Player_2 and surface to onehotencoding
+    numeric_train_df = pd.get_dummies(train_df, prefix=['Player_1', 'Player_2', 'Surface'], columns=['Player_1', 'Player_2', 'Surface'])
 
-    #Building the model
-    model = tf.keras.Sequential([
-        categorical_layer,
-        tf.keras.layers.Dense(128, activation = 'relu'),
-        tf.keras.layers.Dense(128, activation = 'relu'),
-        tf.keras.layers.Dense(1)
-    ])
+    # Make Winner int from object
+    numeric_train_df['Winner'] = pd.to_numeric(train_df['Winner'], downcast = 'integer')
+    print(numeric_train_df)
 
-    model.compile(
-        loss = tf.keras.losses.BinaryCrossentropy(from_logits = True),
-        optimizer = 'adam',
-        metrics = ['accuracy']
-    )
+    # Splitting dataframe to train and test data
+    train, test = train_test_split(numeric_train_df, test_size = 0.1)
 
-    train_data = raw_train_data.shuffle(500)
-    test_data = raw_test_data
 
-    model.fit(train_data, epochs = 5)
+    target = train.pop('Winner')
+    dataset = tf.data.Dataset.from_tensor_slices((train.values, target.values))
 
-    test_loss, test_accuracy = model.evaluate(test_data)
+    test_target = test.pop('Winner')
+    dataset_2 = tf.data.Dataset.from_tensor_slices((test.values, test_target.values))
+
+    for feat, targ in dataset.take(5):
+        print ('Features: {}, Target: {}'.format(feat, targ))
+
+    train_dataset = dataset.shuffle(len(train)).batch(1)
+    test_dataset = dataset_2.shuffle(len(test)).batch(1)
+
+    
+    def get_compiled_model():
+        model = tf.keras.Sequential([
+            tf.keras.layers.Dense(128, activation='relu'),
+            tf.keras.layers.Dense(10, activation='relu'),
+            tf.keras.layers.Dense(1)
+        ])
+
+        model.compile(optimizer='adam',
+                        loss=tf.keras.losses.BinaryCrossentropy(from_logits=True),
+                        metrics=['accuracy']
+                    )
+        return model
+
+    model = get_compiled_model()
+    model.fit(train_dataset, epochs=1)
+
+    test_loss, test_accuracy = model.evaluate(test_dataset)
 
     print('\n\nTest Loss {}, Test Accuracy {}'.format(test_loss, test_accuracy))
 
