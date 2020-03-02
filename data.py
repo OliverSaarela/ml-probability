@@ -16,8 +16,8 @@ def main():
     
 
     # If Player 1 wins winner = 1 and if Player 2 wins winner = 0
-    train_df['Winner'].loc[train_df['Winner'] == train_df['Player_1']] = 0
-    train_df['Winner'].loc[train_df['Winner'] == train_df['Player_2']] = 1
+    train_df['Winner'].loc[train_df['Winner'] == train_df['Player_1']] = 1
+    train_df['Winner'].loc[train_df['Winner'] == train_df['Player_2']] = 0
 
     
     
@@ -66,12 +66,43 @@ def main():
     print('\n\nTest Loss {}, Test Accuracy {}'.format(test_loss, test_accuracy))
 
 
-    predictions = model.predict(test_dataset)
+    # Pick players to test
+    # Making an empty dataframe for the pick and filling it with 0
+    COLUMN_NAMES = list(numeric_train_df.columns)
+    BASE_VALUES = list()
+    for i in range(len(COLUMN_NAMES)):
+        BASE_VALUES.append(0)
+
+    BASE_VALUES = np.array(list(BASE_VALUES))
+
+    picked_df = pd.DataFrame(columns = COLUMN_NAMES)
+    picked_df.loc[0] = BASE_VALUES
+    print(picked_df)
+
+    p1 = str(input('Name Player 1: '))
+    p2 = str(input('Name Player 2: '))
+    surface = str(input('Name surface: '))
+    picked_df['Player_1_' + p1].loc[picked_df['Player_1_' + p1] == picked_df['Player_1_' + p1]] = 1
+    picked_df['Player_2_' + p2].loc[picked_df['Player_2_' + p2] == picked_df['Player_2_' + p2]] = 1
+    picked_df['Surface_' + surface].loc[picked_df['Surface_' + surface] == picked_df['Surface_' + surface]] = 1
+
+    print(picked_df)
+
+    for i in picked_df.columns:
+        picked_df[i] = pd.to_numeric(picked_df[i], downcast = 'integer')
+
+
+    pick_target = picked_df.pop('Winner')
+    picked_dataset = tf.data.Dataset.from_tensor_slices((picked_df.values, pick_target.values))
+
+    picked_dataset = picked_dataset.shuffle(len(picked_df)).batch(1)
+
+    predictions = model.predict(picked_dataset)
 
     print(predictions)
 
     # Show some results
-    for prediction, Winner in zip(predictions[:10], list(test_dataset)[0][1][:10]):
+    for prediction, Winner in zip(predictions[:10], list(picked_dataset)[0][1][:10]):
         print("Player 1 predicted win chance: {:.2%}".format(prediction[0]),
             " | Actual outcome: ",
             ("Player 1" if bool(Winner) else "Player 2"))
