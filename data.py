@@ -16,8 +16,8 @@ def main():
     
 
     # If Player 1 wins winner = 1 and if Player 2 wins winner = 0
-    train_df['Winner'].loc[train_df['Winner'] == train_df['Player_1']] = 1
-    train_df['Winner'].loc[train_df['Winner'] == train_df['Player_2']] = 0
+    train_df['Winner'].loc[train_df['Winner'] == train_df['Player_1']] = 0
+    train_df['Winner'].loc[train_df['Winner'] == train_df['Player_2']] = 1
 
     
     
@@ -41,15 +41,15 @@ def main():
     for feat, targ in dataset.take(5):
         print ('Features: {}, Target: {}'.format(feat, targ))
 
-    train_dataset = dataset.shuffle(len(train)).batch(1)
-    test_dataset = dataset_2.shuffle(len(test)).batch(1)
+    train_dataset = dataset.shuffle(len(train)).batch(5)
+    test_dataset = dataset_2.shuffle(len(test)).batch(5)
 
-    
+    # Building the model
     def get_compiled_model():
         model = tf.keras.Sequential([
             tf.keras.layers.Dense(128, activation='relu'),
-            tf.keras.layers.Dense(10, activation='relu'),
-            tf.keras.layers.Dense(1)
+            tf.keras.layers.Dense(128, activation='relu'),
+            tf.keras.layers.Dense(1, activation='sigmoid')
         ])
 
         model.compile(optimizer='adam',
@@ -59,11 +59,22 @@ def main():
         return model
 
     model = get_compiled_model()
-    model.fit(train_dataset, epochs=2)
+    model.fit(train_dataset, epochs=1)
 
     test_loss, test_accuracy = model.evaluate(test_dataset)
 
     print('\n\nTest Loss {}, Test Accuracy {}'.format(test_loss, test_accuracy))
+
+
+    predictions = model.predict(test_dataset)
+
+    print(predictions)
+
+    # Show some results
+    for prediction, Winner in zip(predictions[:10], list(test_dataset)[0][1][:10]):
+        print("Player 1 predicted win chance: {:.2%}".format(prediction[0]),
+            " | Actual outcome: ",
+            ("Player 1" if bool(Winner) else "Player 2"))
 
 if __name__ == "__main__":
     main()
