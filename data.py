@@ -8,6 +8,9 @@ import pandas as pd
 import tensorflow as tf
 from sklearn.model_selection import train_test_split
 
+# Variable to get numeric columns for predioctions
+numercolumns = ""
+
 def main():
     train_data_path = 'data/2000-2020-supershort.csv'
 
@@ -28,6 +31,9 @@ def main():
     numeric_train_df['Winner'] = pd.to_numeric(train_df['Winner'], downcast = 'integer')
     print(numeric_train_df)
 
+    #Assigning numercolumns the value that it needs for predictions
+    numercolumns = numeric_train_df.columns
+
     # Splitting dataframe to train and test data
     train, test = train_test_split(numeric_train_df, test_size = 0.1)
 
@@ -44,19 +50,7 @@ def main():
     train_dataset = dataset.shuffle(len(train)).batch(5)
     test_dataset = dataset_2.shuffle(len(test)).batch(5)
 
-    # Building the model
-    def get_compiled_model():
-        model = tf.keras.Sequential([
-            tf.keras.layers.Dense(128, activation='relu'),
-            tf.keras.layers.Dense(128, activation='relu'),
-            tf.keras.layers.Dense(1, activation='sigmoid')
-        ])
-
-        model.compile(optimizer='adam',
-                        loss=tf.keras.losses.BinaryCrossentropy(from_logits=True),
-                        metrics=['accuracy']
-                    )
-        return model
+    
 
     model = get_compiled_model()
     model.fit(train_dataset, epochs=1)
@@ -64,11 +58,34 @@ def main():
     test_loss, test_accuracy = model.evaluate(test_dataset)
 
     print('\n\nTest Loss {}, Test Accuracy {}'.format(test_loss, test_accuracy))
+    
+    return model
 
 
+    
+
+if __name__ == "__main__":
+    main()
+
+# Building the model
+def get_compiled_model():
+    model = tf.keras.Sequential([
+        tf.keras.layers.Dense(128, activation='relu'),
+        tf.keras.layers.Dense(128, activation='relu'),
+        tf.keras.layers.Dense(1, activation='sigmoid')
+    ])
+
+    model.compile(optimizer='adam',
+                    loss=tf.keras.losses.BinaryCrossentropy(from_logits=True),
+                    metrics=['accuracy']
+                )
+    return model
+    
+#Prediction as a method
+def make_prediction(self, model, p1, p2, surface):
     # Pick players to test
     # Making an empty dataframe for the pick and filling it with 0
-    COLUMN_NAMES = list(numeric_train_df.columns)
+    COLUMN_NAMES = list(numercolumns)
     BASE_VALUES = list()
     for i in range(len(COLUMN_NAMES)):
         BASE_VALUES.append(0)
@@ -79,9 +96,6 @@ def main():
     picked_df.loc[0] = BASE_VALUES
     print(picked_df)
 
-    p1 = str(input('Name Player 1: '))
-    p2 = str(input('Name Player 2: '))
-    surface = str(input('Name surface: '))
     picked_df['Player_1_' + p1].loc[picked_df['Player_1_' + p1] == picked_df['Player_1_' + p1]] = 1
     picked_df['Player_2_' + p2].loc[picked_df['Player_2_' + p2] == picked_df['Player_2_' + p2]] = 1
     picked_df['Surface_' + surface].loc[picked_df['Surface_' + surface] == picked_df['Surface_' + surface]] = 1
@@ -106,6 +120,3 @@ def main():
         print("Player 1 predicted win chance: {:.2%}".format(prediction[0]),
             " | Actual outcome: ",
             ("Player 1" if bool(Winner) else "Player 2"))
-
-if __name__ == "__main__":
-    main()
