@@ -99,13 +99,8 @@ def main():
 
     predictions = model.predict(picked_dataset)
 
-    print(predictions)
-
-    # Show some results
-    for prediction, Winner in zip(predictions[:10], list(picked_dataset)[0][1][:10]):
-        print("Player 1 predicted win chance: {:.2%}".format(prediction[0]),
-            " | Actual outcome: ",
-            ("Player 1" if bool(Winner) else "Player 2"))
+    #Show results
+    print(p1, 'Win chance against', p2, 'on', surface, 'court: {:.2%}'.format(predictions[0][0]))
 
 if __name__ == "__main__":
     main()
