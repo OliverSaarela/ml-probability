@@ -9,11 +9,22 @@ import tensorflow as tf
 from sklearn.model_selection import train_test_split
 
 def main():
-    train_data_path = 'data/2000-2020-supershort.csv'
+    all_games_path = 'https://query.data.world/s/hwr7vh7cfuhbbr3xmddeyc4di2jk5r' # Url for games data
 
-    
-    train_df = pd.read_csv(train_data_path)
-    
+    all_players_path = 'https://query.data.world/s/ywfgaydmlp4lha4dlitbpf3f3npppd' # Url for players data
+
+    games_df = pd.read_csv(all_games_path, dtype = {'wrank': object, 'lrank': object, 'w2': object, 'l2': object, 'w3': object, 'l3': object})
+    players_df = pd.read_csv(all_players_path)
+
+    # train_df = pd.read_csv(all_games_path) <--- Poista joskus kun on valmista
+
+    print(games_df.dtypes)
+    print(players_df.dtypes)
+    # Making one dataframe with all the data for making predictions
+    all_columns = list(players_df['full_name'])
+
+    all_columns.extend(['p1_weight_kg','p2_weight_kg', 'p1_height_cm', 'p2_height_cm', 'p1_handedness', 'p2_handedness', 'p1_backhand', 'p2_backhand'])
+    print(all_columns)
 
     # If Player 1 wins winner = 1 and if Player 2 wins winner = 0
     train_df['Winner'].loc[train_df['Winner'] == train_df['Player_1']] = 1
