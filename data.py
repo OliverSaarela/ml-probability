@@ -23,7 +23,7 @@ def main():
     # Making one dataframe with all the data for making predictions
     all_columns = list(players_df['full_name'] + '.')
 
-    all_columns.extend(['p1_weight_kg','p2_weight_kg', 'p1_height_cm', 'p2_height_cm', 'p1_handedness', 'p2_handedness', 'p1_backhand', 'p2_backhand', 'p1_rank', 'p2_rank', 'p1_game1', 'p2_game1', 'p1_game2', 'p2_game2', 'p1_game3', 'p2_game3', 'p1_game4', 'p2_game4', 'p1_game5', 'p2_game5', 'p1_sets', 'p2_sets', 'winner'])
+    all_columns.extend(['Al-Alawi S.K.', 'Bahrouzyan O.', 'Marin L.', 'Srichaphan N.', 'Schuttler P.', 'Prpic A.', 'Youzhny A.', 'Ascione A.', 'Kucera V.', 'Ancic I.', 'Verdasco M.', 'p1_weight_kg','p2_weight_kg', 'p1_height_cm', 'p2_height_cm', 'p1_handedness', 'p2_handedness', 'p1_backhand', 'p2_backhand', 'p1_rank', 'p2_rank', 'p1_game1', 'p2_game1', 'p1_game2', 'p2_game2', 'p1_game3', 'p2_game3', 'p1_game4', 'p2_game4', 'p1_game5', 'p2_game5', 'p1_sets', 'p2_sets', 'winner'])
 
     all_columns = np.unique(all_columns)
 
@@ -48,8 +48,13 @@ def main():
 
     full_df = pd.DataFrame(LISTED_VALUES, columns = all_columns)
     
+    # Changing all names to be correct between eachother
+    full_df.rename(columns={'Gambill JM.': 'Gambill J.M.', 'Lisnard JR.': 'Lisnard J.', 'Lopez Moron A.': 'Lopez-Moron A.', 'Marin JA.': 'Marin J.A.', 'Ferrero JC.': 'Ferrero J.C.', 'Perez-Alvarez E.': 'Alvarez E.', 'Chela JI.': 'Chela J.I.', 'Viloca-Puig JA.': 'Viloca J.A.', 'Burrieza-Lopez O.': 'Burrieza O.', 'Goellner MK.': 'Goellner M.K.', 'Van Scheppingen D.': 'van Scheppingen D.', 'Arnold Ker L.': 'Arnold L.', 'Mathieu PH.': 'Mathieu P.H.', 'Lee HT.': 'Lee H.T.', 'Yoon YI.': 'Yoon Y.', 'Zhu BQ.': 'Zhu B.Q.', 'Andersen JF.': 'Andersen J.F.', 'Wang YJ.': 'Wang Y.', 'Al-Khulaifi NG.': 'Al Khulaifi N.G.', 'Vassallo Arguello M.': 'Vassallo-Arguello M.', 'Guzman JP.': 'Guzman J.P.', 'Lisnard JR.': 'Lisnard J.R.', 'Gallardo-Valles M.': 'Gallardo Valles M.', 'Scherrer JC.': 'Scherrer J.C.', 'Zeng SX.': 'Zeng S.X.', 'Hippensteel KJ.': 'Hippensteel K.', 'Faurel JC.': 'Faurel J.C.', 'Matos Gil I.': 'Matos-Gil I.', 'Lu YH.': 'Lu Y.H.', 'Qureshi AUH.': 'Qureshi A.', 'Navarro I.': 'Navarro-Pastor I.', 'Wang YJ.': 'Wang Y.T.', 'Tsonga JW.': 'Tsonga J.W.'}, inplace=True)
 
-    full_df.rename(columns={'Gambill JM.': 'Gambill J.M.', 'Lisnard JR.': 'Lisnard J.', 'Lopez Moron A.': 'Lopez-Moron A.'}, inplace=True)
+    games_df.replace(
+        to_replace=['di Pasquale A.', 'de Chaunac S.', 'Nadal-Parera R.', 'Kunitcin I.', 'Lisnard J.', 'Van Lottum J.', 'Hantschek M.', 'Bogomolov Jr.A.', 'Gambill J. M.', 'Bachelot J.F', 'Marin J.A', 'Mathieu P.', 'Schuettler P.', 'de Voest R.', 'Ramirez-Hidalgo R.', 'Bogomolov A.', 'di Mauro A.', 'Scherrer J.', 'Chela J.', 'Ferrero J.', 'Al Ghareeb M.', 'Al-Ghareeb M.', 'Qureshi A.U.H.', 'Wang Y.', 'van der Meer N.', 'van Gemerden M.', 'Lu Y.', 'Gimeno D.'],
+        value=['Di Pasquale A.', 'De Chaunac S.', 'Nadal R.', 'Kunitsyn I.', 'Lisnard J.R.', 'van Lottum J.', 'Hantschk M.', 'Bogomolov Jr. A.', 'Gambill J.M.', 'Bachelot JF.', 'Marin J.A.', 'Mathieu P.H.', 'Schuttler P.', 'De Voest R.', 'Ramirez Hidalgo R.', 'Bogomolov Jr. A.', 'Di Mauro A.', 'Scherrer J.C.', 'Chela J.I.', 'Ferrero J.C.', 'Ghareeb M.', 'Ghareeb M.', 'Qureshi A.', 'Wang Y.T.', 'Van Der Meer N.', 'Van Gemerden M.', 'Lu Y.H.', 'Gimeno-Traver D.'],
+        inplace=True)
 
     print(full_df)
     print(full_df.dtypes)
