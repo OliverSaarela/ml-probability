@@ -25,7 +25,27 @@ def main():
 
     all_columns.extend(['p1_weight_kg','p2_weight_kg', 'p1_height_cm', 'p2_height_cm', 'p1_handedness', 'p2_handedness', 'p1_backhand', 'p2_backhand', 'p1_rank', 'p2_rank', 'p1_game1', 'p2_game1', 'p1_game2', 'p2_game2', 'p1_game3', 'p2_game3', 'p1_game4', 'p2_game4', 'p1_game5', 'p2_game5', 'p1_sets', 'p2_sets'])
 
-    full_df = games_df[['surface', 'best_of']].copy()
+
+    # Making all rows empty
+    BASE_VALUES = []
+    for i in range(len(all_columns)):
+        BASE_VALUES.append(0)
+
+    BASE_VALUES = np.array(BASE_VALUES)
+    LISTED_VALUES = []
+    
+    print(BASE_VALUES)
+
+    for i in range(games_df.shape[0]):
+        LISTED_VALUES.append(BASE_VALUES)
+
+    LISTED_VALUES = np.array(LISTED_VALUES)
+
+    print(LISTED_VALUES)
+
+
+    full_df = pd.DataFrame(LISTED_VALUES, columns = all_columns)
+
 
     print(full_df)
 
