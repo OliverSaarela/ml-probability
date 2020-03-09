@@ -29,9 +29,10 @@ def main():
 
     # Make Winner int from object
     numeric_train_df['Winner'] = pd.to_numeric(train_df['Winner'], downcast = 'integer')
-    print(numeric_train_df)
+    #print(numeric_train_df)
 
     #Assigning numercolumns the value that it needs for predictions
+    global numercolumns
     numercolumns = numeric_train_df.columns
 
     # Splitting dataframe to train and test data
@@ -44,8 +45,8 @@ def main():
     test_target = test.pop('Winner')
     dataset_2 = tf.data.Dataset.from_tensor_slices((test.values, test_target.values))
 
-    for feat, targ in dataset.take(5):
-        print ('Features: {}, Target: {}'.format(feat, targ))
+    #for feat, targ in dataset.take(5):
+    #    print ('Features: {}, Target: {}'.format(feat, targ))
 
     train_dataset = dataset.shuffle(len(train)).batch(5)
     test_dataset = dataset_2.shuffle(len(test)).batch(5)
@@ -82,9 +83,10 @@ def get_compiled_model():
     return model
     
 #Prediction as a method
-def make_prediction(self, model, p1, p2, surface):
+def make_prediction(model, p1, p2, surface):
     # Pick players to test
     # Making an empty dataframe for the pick and filling it with 0
+    global numercolumns
     COLUMN_NAMES = list(numercolumns)
     BASE_VALUES = list()
     for i in range(len(COLUMN_NAMES)):
@@ -94,13 +96,13 @@ def make_prediction(self, model, p1, p2, surface):
 
     picked_df = pd.DataFrame(columns = COLUMN_NAMES)
     picked_df.loc[0] = BASE_VALUES
-    print(picked_df)
+    #print(picked_df)
 
     picked_df['Player_1_' + p1].loc[picked_df['Player_1_' + p1] == picked_df['Player_1_' + p1]] = 1
     picked_df['Player_2_' + p2].loc[picked_df['Player_2_' + p2] == picked_df['Player_2_' + p2]] = 1
     picked_df['Surface_' + surface].loc[picked_df['Surface_' + surface] == picked_df['Surface_' + surface]] = 1
 
-    print(picked_df)
+    #print(picked_df)
 
     for i in picked_df.columns:
         picked_df[i] = pd.to_numeric(picked_df[i], downcast = 'integer')
@@ -116,7 +118,9 @@ def make_prediction(self, model, p1, p2, surface):
     print(predictions)
 
     # Show some results
-    for prediction, Winner in zip(predictions[:10], list(picked_dataset)[0][1][:10]):
-        print("Player 1 predicted win chance: {:.2%}".format(prediction[0]),
-            " | Actual outcome: ",
-            ("Player 1" if bool(Winner) else "Player 2"))
+    #for prediction, Winner in zip(predictions[:10], list(picked_dataset)[0][1][:10]):
+     #   print("Player 1 predicted win chance: {:.2%}".format(prediction[0]),
+      #      " | Actual outcome: ",
+       #     ("Player 1" if bool(Winner) else "Player 2"))
+        
+    return dict(predictions[0][0])

@@ -3,40 +3,39 @@
 from http.server import BaseHTTPRequestHandler
 from routes.main import routes
 from pathlib import Path
+import json
+import data
 
 class Server(BaseHTTPRequestHandler):
+    def _set_headers(self):
+        self.send_response(200)
+        self.send_header('Content-type', 'application/json')
+        self.end_headers()
+    
     def do_HEAD(self):
-        return
+        self._set_headers()
 
     def do_POST(self):
-        return
+        lenght = int(self.headers.get('content-length'))
+        postdata = json.loads(self.rfile.read(lenght))
+        model = data.main()
+        prediction = data.make_prediction(model, postdata["player1"], postdata["player2"], postdata["surface"])
+        print(prediction)
+        self._set_headers()
+        self.wfile.write()
 
     def do_GET(self):
         self.respond()
 
     def handle_http(self):
-        status = 200
-        content_type = "text/plain"
         response_content = ""
 
-        if self.path in routes:
-            print(routes[self.path])
-            route_content = routes[self.path]['template']
-            filepath = Path("templates/{}".format(route_content))
-            if filepath.is_file():
-                content_type = "text/html"
-                response_content = open("templates/{}".format(route_content))
-                response_content = response_content.read()
-            else:
-                content_type = "text/plain"
-                response_content = "404 Not Found"
-        else:
-            content_type = "text/plain"
-            response_content = "404 Not Found"
+        cont = {
+            "Json" : "test"
+        }
+        response_content = json.dumps(cont)
 
-        self.send_response(status)
-        self.send_header('Content-type', content_type)
-        self.end_headers()
+        self._set_headers()
         return bytes(response_content, "UTF-8")
 
 
