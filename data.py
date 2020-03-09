@@ -123,4 +123,4 @@ def make_prediction(model, p1, p2, surface):
       #      " | Actual outcome: ",
        #     ("Player 1" if bool(Winner) else "Player 2"))
         
-    return dict(predictions[0][0])
+    return predictions

@@ -6,7 +6,10 @@ from pathlib import Path
 import json
 import data
 
+
 class Server(BaseHTTPRequestHandler):
+    model = data.main()
+        
     def _set_headers(self):
         self.send_response(200)
         self.send_header('Content-type', 'application/json')
@@ -16,13 +19,29 @@ class Server(BaseHTTPRequestHandler):
         self._set_headers()
 
     def do_POST(self):
+        #Reads json posted to server
+        #format is 
+        # {
+	    #   "player1": "Nadal R.",
+	    #   "player2": "Federer R.",
+	    #   "surface": "Hard"
+        # }
         lenght = int(self.headers.get('content-length'))
         postdata = json.loads(self.rfile.read(lenght))
-        model = data.main()
-        prediction = data.make_prediction(model, postdata["player1"], postdata["player2"], postdata["surface"])
-        print(prediction)
-        self._set_headers()
-        self.wfile.write()
+        
+        #Make a predicton
+        prediction = data.make_prediction(self.model, postdata["player1"], postdata["player2"], postdata["surface"])
+        #print(prediction)
+        
+        #Convert to right type
+        prediction = prediction.tolist()
+        posting = bytes(json.dumps(prediction), "UTF-8")
+        
+        #Send response
+        # respose is player1 win chance in format
+        # [[0.20999354]]
+        self._set_headers() 
+        self.wfile.write(posting)
 
     def do_GET(self):
         self.respond()
