@@ -18,12 +18,14 @@ def main():
 
     # train_df = pd.read_csv(all_games_path) <--- Poista joskus kun on valmista
 
-    print(games_df.dtypes)
-    print(players_df.dtypes)
+    #print(games_df.dtypes)
+    #print(players_df.dtypes)
     # Making one dataframe with all the data for making predictions
-    all_columns = list(players_df['full_name'])
+    all_columns = list(players_df['full_name'] + '.')
 
-    all_columns.extend(['p1_weight_kg','p2_weight_kg', 'p1_height_cm', 'p2_height_cm', 'p1_handedness', 'p2_handedness', 'p1_backhand', 'p2_backhand', 'p1_rank', 'p2_rank', 'p1_game1', 'p2_game1', 'p1_game2', 'p2_game2', 'p1_game3', 'p2_game3', 'p1_game4', 'p2_game4', 'p1_game5', 'p2_game5', 'p1_sets', 'p2_sets'])
+    all_columns.extend(['p1_weight_kg','p2_weight_kg', 'p1_height_cm', 'p2_height_cm', 'p1_handedness', 'p2_handedness', 'p1_backhand', 'p2_backhand', 'p1_rank', 'p2_rank', 'p1_game1', 'p2_game1', 'p1_game2', 'p2_game2', 'p1_game3', 'p2_game3', 'p1_game4', 'p2_game4', 'p1_game5', 'p2_game5', 'p1_sets', 'p2_sets', 'winner'])
+
+    all_columns = np.unique(all_columns)
 
 
     # Making all rows empty
@@ -34,21 +36,30 @@ def main():
     BASE_VALUES = np.array(BASE_VALUES)
     LISTED_VALUES = []
     
-    print(BASE_VALUES)
+    #print(BASE_VALUES)
 
     for i in range(games_df.shape[0]):
         LISTED_VALUES.append(BASE_VALUES)
 
     LISTED_VALUES = np.array(LISTED_VALUES)
 
-    print(LISTED_VALUES)
+    #print(LISTED_VALUES)
 
 
     full_df = pd.DataFrame(LISTED_VALUES, columns = all_columns)
+    
 
+    full_df.rename(columns={'Gambill JM.': 'Gambill J.M.', 'Lisnard JR.': 'Lisnard J.', 'Lopez Moron A.': 'Lopez-Moron A.'}, inplace=True)
 
     print(full_df)
+    print(full_df.dtypes)
 
+
+    for i, winner, loser in zip(range(games_df.shape[0]), games_df['winner'], games_df['loser']):
+        full_df[winner].loc[i] = 1
+        full_df[loser].loc[i] = 1
+
+    print(full_df.head(30))
     # If Player 1 wins winner = 1 and if Player 2 wins winner = 0
     train_df['Winner'].loc[train_df['Winner'] == train_df['Player_1']] = 1
     train_df['Winner'].loc[train_df['Winner'] == train_df['Player_2']] = 0
