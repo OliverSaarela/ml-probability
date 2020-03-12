@@ -1,7 +1,6 @@
 # coding=utf-8
 
 from http.server import BaseHTTPRequestHandler
-from pathlib import Path
 import json
 import data
 

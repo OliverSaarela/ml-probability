@@ -89,5 +89,3 @@ dependencies:
   - wrapt=1.11.2=py37h7b6447c_0
   - xz=5.2.4=h14c3975_4
   - zlib=1.2.11=h7b6447c_3
-prefix: /home/vargynja/anaconda3/envs/tensorflow-env
-
