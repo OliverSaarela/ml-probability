@@ -21,6 +21,9 @@ def main():
     # Removing . from names
     games_df['winner'] = games_df['winner'].str.replace('.', '')
     games_df['loser'] = games_df['loser'].str.replace('.', '')
+    # Removing whitespace
+    games_df['winner'] = games_df['winner'].str.strip()
+    games_df['loser'] = games_df['loser'].str.strip()
 
     games_df.replace(
         to_replace=['Lisnard J',
@@ -74,7 +77,36 @@ def main():
                     'Luque D',
                     'Vicente M',
                     'De Bakker T',
-                    'Haider-Mauer A'],
+                    'Haider-Mauer A',
+                    'Dev Varman S',
+                    'Wang YJr',
+                    'Fish A',
+                    'Robredo R',
+                    'Jun W',
+                    'Fornell M',
+                    'Stepanek M',
+                    'Guzman J',
+                    'Guccione A',
+                    'Ruevski P',
+                    'Gard C',
+                    'Matsukevitch D',
+                    'Chekov P',
+                    'Haji A',
+                    'Podlipnik H',
+                    'Al-Ghareeb M',
+                    'Lopez-Jaen MA',
+                    'Trujillo G',
+                    'Sanchez De Luna J',
+                    'Del Potro J',
+                    'Estrella V',
+                    'De Heart R',
+                    'Silva D',
+                    'Munoz de La Nava D',
+                    'Riba-Madrid P',
+                    'Munoz-De La Nava D',
+                    'Del Bonis F',
+                    'Bautista R',
+                    'Van Der Merwe I'],
         value=['Lisnard JR',
                 'Lopez Moron A',
                 'Perez-Alvarez E',
@@ -126,7 +158,36 @@ def main():
                 'Luque-Velasco D',
                 'Vicente F',
                 'de Bakker T',
-                'Haider-Maurer A'],
+                'Haider-Maurer A',
+                'Devvarman S',
+                'Wang YJ',
+                'Fish M',
+                'Robredo T',
+                'Jun WS',
+                'Fornell-Mestres M',
+                'Stepanek R',
+                'Guzman JP',
+                'Guccione C',
+                'Rusevski P',
+                'Gard CI',
+                'Matsukevich D',
+                'Chekhov P',
+                'Hajji A',
+                'Podlipnik-Castillo H',
+                'Ghareeb M',
+                'Lopez Jaen MA',
+                'Trujillo-Soler G',
+                'Sanchez-de Luna JA',
+                'del Potro JM',
+                'Estrella Burgos V',
+                'DeHeart R',
+                'Dutra da Silva D',
+                'Munoz de la Nava D',
+                'Riba P',
+                'Munoz de la Nava D',
+                'Delbonis F',
+                'Bautista Agut R',
+                'Van der Merwe I'],
         inplace=True)
 
     print(games_df)
@@ -134,8 +195,8 @@ def main():
     # Making one dataframe with all the data for making predictions
     all_columns = list(players_df['full_name'])
 
-    # Includes players who aren't in players data
-    all_columns.extend(['Al-Alawi SK', 'Bahrouzyan O', 'Marin L', 'Srichaphan N', 'Schuettler P', 'Prpic A', 'Youzhny A', 'Ascione A', 'Kucera V', 'Ancic I', 'Verdasco M', 'Rascon T', 'March O', 'Wang YT', 'Kutac R',
+    # Includes players who aren't in players dataframe
+    all_columns.extend(['Al-Alawi SK', 'Bahrouzyan O', 'Marin L', 'Srichaphan N', 'Schuettler P', 'Prpic A', 'Youzhny A', 'Ascione A', 'Kucera V', 'Ancic I', 'Verdasco M', 'Rascon T', 'March O', 'Wang YT', 'Kutac R', 'Nader M', 'Statham J', 'Dolgopolov O',
     'p1_weight_kg','p2_weight_kg', 'p1_height_cm', 'p2_height_cm', 'p1_handedness', 'p2_handedness', 'p1_backhand', 'p2_backhand', 'p1_rank', 'p2_rank', 'p1_game1', 'p2_game1', 'p1_game2', 'p2_game2', 'p1_game3', 'p2_game3', 'p1_game4', 'p2_game4', 'p1_game5', 'p2_game5', 'p1_sets', 'p2_sets', 'winner'])
 
     all_columns = np.unique(all_columns)
@@ -161,10 +222,6 @@ def main():
 
     full_df = pd.DataFrame(LISTED_VALUES, columns = all_columns)
     
-    
-
-    print(full_df)
-    print(full_df.dtypes)
 
 
     for i, winner, loser in zip(range(games_df.shape[0]), games_df['winner'], games_df['loser']):
@@ -172,6 +229,10 @@ def main():
         full_df[loser].loc[i] = 1
 
     print(full_df.head(30))
+
+
+
+
     # If Player 1 wins winner = 1 and if Player 2 wins winner = 0
     train_df['Winner'].loc[train_df['Winner'] == train_df['Player_1']] = 1
     train_df['Winner'].loc[train_df['Winner'] == train_df['Player_2']] = 0
