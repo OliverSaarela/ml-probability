@@ -33,7 +33,7 @@ def main():
     print(numeric_train_df)
 
     # Splitting dataframe to train and test data
-    train, test = train_test_split(numeric_train_df, test_size = 0.2)
+    train, test = train_test_split(numeric_train_df, test_size = 0.01)
 
 
     target = train.pop('Winner')
@@ -45,7 +45,7 @@ def main():
     for feat, targ in dataset.take(5):
         print ('Features: {}, Target: {}'.format(feat, targ))
 
-    train_dataset = dataset.shuffle(len(train)).batch(5)
+    train_dataset = dataset.shuffle(len(train)).batch(50)
     test_dataset = dataset_2.shuffle(len(test)).batch(5)
 
     # Building the model
@@ -106,10 +106,9 @@ def main():
     print(predictions)
 
     # Show some results
-    for prediction, Winner in zip(predictions[:10], list(picked_dataset)[0][1][:10]):
-        print("Player 1 predicted win chance: {:.2%}".format(prediction[0]),
-            " | Actual outcome: ",
-            ("Player 1" if bool(Winner) else "Player 2"))
+    for prediction in predictions[:10]:
+        print(p1, "predicted win chance: {:.2%}".format(prediction[0]),
+            "against:", p2)
 
 if __name__ == "__main__":
     main()
