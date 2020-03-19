@@ -24,6 +24,8 @@ def main():
     # Removing whitespace
     games_df['winner'] = games_df['winner'].str.strip()
     games_df['loser'] = games_df['loser'].str.strip()
+    # Changing NaN to 0
+    games_df.fillna(0, inplace=True)
 
     # Changing values in games_df
     games_df.replace(
@@ -93,10 +95,8 @@ def main():
             full_df['p2_game5'].loc[i] = games_df['l5'].loc[i]
 
             # Won sets
-            if games_df['wsets'].loc[i] != None:
-                full_df['p1_sets'].loc[i] = games_df['wsets'].loc[i]
-            if games_df['lsets'].loc[i] != None:
-                full_df['p2_sets'].loc[i] = games_df['lsets'].loc[i]
+            full_df['p1_sets'].loc[i] = int(games_df['wsets'].loc[i])
+            full_df['p2_sets'].loc[i] = int(games_df['lsets'].loc[i])
 
         else:
             full_df['winner'].loc[i] = 0
@@ -114,10 +114,8 @@ def main():
             full_df['p2_game5'].loc[i] = games_df['w5'].loc[i]
 
             # Won sets
-            if games_df['wsets'].loc[i] != None:
-                full_df['p2_sets'].loc[i] = games_df['wsets'].loc[i]
-            if games_df['lsets'].loc[i] != None:
-                full_df['p1_sets'].loc[i] = games_df['lsets'].loc[i]
+            full_df['p2_sets'].loc[i] = int(games_df['wsets'].loc[i])
+            full_df['p1_sets'].loc[i] = int(games_df['lsets'].loc[i])
 
     print(full_df)
 
