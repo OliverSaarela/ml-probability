@@ -28,9 +28,9 @@ def main():
     # Changing values in games_df
     games_df.replace(
         # Old values
-        to_replace=['Lisnard J', 'Lopez-Moron A', 'Alvarez E', 'di Pasquale A', 'Viloca JA', 'Burrieza O', 'van Scheppingen D', 'Arnold L', 'Yoon Y', 'Bogomolov JrA', 'de Chaunac S', 'Wang Y', 'Al Khulaifi NG', 'Nadal-Parera R', 'Vassallo-Arguello M', 'Kunitcin I', 'Van Lottum J' ,'Hantschek M', 'Bogomolov Jr A', 'Gambill J M', 'Gallardo Valles M', 'Mathieu P', 'Schuttler P', 'de Voest R', 'Ramirez-Hidalgo R', 'Bogomolov A', 'di Mauro A', 'Scherrer J', 'Chela J', 'Ferrero J', 'Hippensteel K', 'Al Ghareeb M', 'Matos-Gil I', 'Qureshi A', 'Navarro-Pastor I', 'van der Meer N', 'van Gemerden M', 'Lu Y', 'Gimeno D', 'Gruber K', 'Wang Y Jr', 'Sanchez de Luna JA', 'Sultan-Khalfan A', 'Del Potro JM', 'Querry S', 'Van der Dium A', 'Granollers-Pujol M', 'Salva B', 'Luque D', 'Vicente M', 'De Bakker T', 'Haider-Mauer A', 'Dev Varman S', 'Wang YJr', 'Fish A', 'Robredo R', 'Jun W', 'Fornell M', 'Stepanek M', 'Guzman J', 'Guccione A', 'Ruevski P', 'Gard C', 'Matsukevitch D', 'Chekov P', 'Haji A', 'Podlipnik H', 'Al-Ghareeb M', 'Lopez-Jaen MA', 'Trujillo G', 'Sanchez De Luna J', 'Del Potro J', 'Estrella V', 'De Heart R', 'Silva D', 'Munoz de La Nava D', 'Riba-Madrid P', 'Munoz-De La Nava D', 'Del Bonis F', 'Bautista R', 'Van Der Merwe I', 'Saavedra Corvalan C', 'Deheart R', 'Kuznetsov Al', 'Awadhy O', 'Granollers Pujol G', 'Kuznetsov An', 'Ramos A', 'Carreno-Busta P' ,'Granollers-Pujol G', 'Dutra Da Silva R', 'Al Mutawa J', 'Viola Mat', 'Van D Merwe I', 'Mcclune M', 'Deen Heshaam A', 'Stebe C-M', 'Ali Mutawa JM', 'Zayed M S', 'Mcdonald M', 'Nedovyesov O', 'Struff J-L', 'Ciorcila P', 'Mcgee J', 'Herbert P-H', 'Prashanth V', 'Silva F' ,'Hemery C', 'Zhang Ze', 'Zhang Zh', 'Zayid M S', 'Munoz De La Nava D', 'De Minaur A', 'Silva FF', 'Del Potro J M'],
+        to_replace=['Lisnard J', 'Lopez-Moron A', 'Alvarez E', 'di Pasquale A', 'Viloca JA', 'Burrieza O', 'van Scheppingen D', 'Arnold L', 'Yoon Y', 'Bogomolov JrA', 'de Chaunac S', 'Wang Y', 'Al Khulaifi NG', 'Nadal-Parera R', 'Vassallo-Arguello M', 'Kunitcin I', 'Van Lottum J' ,'Hantschek M', 'Bogomolov Jr A', 'Gambill J M', 'Gallardo Valles M', 'Mathieu P', 'Schuttler P', 'de Voest R', 'Ramirez-Hidalgo R', 'Bogomolov A', 'di Mauro A', 'Scherrer J', 'Chela J', 'Ferrero J', 'Hippensteel K', 'Al Ghareeb M', 'Matos-Gil I', 'Qureshi A', 'Navarro-Pastor I', 'van der Meer N', 'van Gemerden M', 'Lu Y', 'Gimeno D', 'Gruber K', 'Wang Y Jr', 'Sanchez de Luna JA', 'Sultan-Khalfan A', 'Del Potro JM', 'Querry S', 'Van der Dium A', 'Granollers-Pujol M', 'Salva B', 'Luque D', 'Vicente M', 'De Bakker T', 'Haider-Mauer A', 'Dev Varman S', 'Wang YJr', 'Fish A', 'Robredo R', 'Jun W', 'Fornell M', 'Stepanek M', 'Guzman J', 'Guccione A', 'Ruevski P', 'Gard C', 'Matsukevitch D', 'Chekov P', 'Haji A', 'Podlipnik H', 'Al-Ghareeb M', 'Lopez-Jaen MA', 'Trujillo G', 'Sanchez De Luna J', 'Del Potro J', 'Estrella V', 'De Heart R', 'Silva D', 'Munoz de La Nava D', 'Riba-Madrid P', 'Munoz-De La Nava D', 'Del Bonis F', 'Bautista R', 'Van Der Merwe I', 'Saavedra Corvalan C', 'Deheart R', 'Kuznetsov Al', 'Awadhy O', 'Granollers Pujol G', 'Kuznetsov An', 'Ramos A', 'Carreno-Busta P' ,'Granollers-Pujol G', 'Dutra Da Silva R', 'Al Mutawa J', 'Viola Mat', 'Van D Merwe I', 'Mcclune M', 'Deen Heshaam A', 'Stebe C-M', 'Ali Mutawa JM', 'Zayed M S', 'Mcdonald M', 'Nedovyesov O', 'Struff J-L', 'Ciorcila P', 'Mcgee J', 'Herbert P-H', 'Prashanth V', 'Silva F' ,'Hemery C', 'Zhang Ze', 'Zhang Zh', 'Zayid M S', 'Munoz De La Nava D', 'De Minaur A', 'Silva FF', 'Del Potro J M', 'Aragone JC', 'Monteiro J', 'Mukund S', 'Meligeni Rodrigues F'],
         # New Values
-        value=['Lisnard JR', 'Lopez Moron A', 'Perez-Alvarez E', 'Di Pasquale A', 'Viloca-Puig JA', 'Burrieza-Lopez O', 'Van Scheppingen D', 'Arnold Ker L', 'Yoon YI', 'Bogomolov Jr. A', 'De Chaunac S', 'Wang YJ', 'Al-Khulaifi NG', 'Nadal R', 'Vassallo Arguello M', 'Kunitsyn I' ,'van Lottum J', 'Hantschk M', 'Bogomolov Jr. A', 'Gambill JM', 'Gallardo-Valles M', 'Mathieu PH', 'Schuettler P', 'De Voest R', 'Ramirez Hidalgo R', 'Bogomolov Jr. A', 'Di Mauro A', 'Scherrer JC', 'Chela JI', 'Ferrero JC', 'Hippensteel KJ', 'Ghareeb M', 'Matos Gil I' ,'Qureshi AUH', 'Navarro I', 'Van Der Meer N', 'Van Gemerden M', 'Lu YH', 'Gimeno-Traver D', 'Gruber KD', 'Wang YJ', 'Sanchez-de Luna JA', 'Khalfan S', 'del Potro JM', 'Querrey S', 'Van Der Duim A', 'Granollers M', 'Salva-Vidal B', 'Luque-Velasco D', 'Vicente F', 'de Bakker T', 'Haider-Maurer A', 'Devvarman S', 'Wang YJ', 'Fish M', 'Robredo T', 'Jun WS', 'Fornell-Mestres M', 'Stepanek R', 'Guzman JP', 'Guccione C', 'Rusevski P', 'Gard CI', 'Matsukevich D', 'Chekhov P', 'Hajji A', 'Podlipnik-Castillo H', 'Ghareeb M', 'Lopez Jaen MA' ,'Trujillo-Soler G', 'Sanchez-de Luna JA', 'del Potro JM', 'Estrella Burgos V', 'DeHeart R', 'Dutra da Silva D', 'Munoz de la Nava D', 'Riba P', 'Munoz de la Nava D', 'Delbonis F', 'Bautista Agut R', 'Van der Merwe I', 'Saavedra-Corvalan C', 'DeHeart R', 'Kuznetsov A' ,'Alawadhi O', 'Granollers G', 'Kuznetsov A', 'Ramos-Vinolas A', 'Carreno Busta P', 'Granollers G', 'Dutra Silva R', 'Al-Mutawa J', 'Viola M', 'Van der Merwe I', 'McClune M', 'Deen Heshaam AE', 'Stebe CM', 'Al-Mutawa J', 'Zayed MS', 'McDonald M', 'Nedovyesov A', 'Struff JL' ,'Ciorcila  P', 'McGee J', 'Herbert PH', 'Prashanth NVS', 'Cunha-Silva F', 'Hemery  C', 'Zhang Z', 'Zhang Z', 'Zayid MS', 'Munoz de la Nava D', 'de Minaur A', 'Ferreira Silva F', 'del Potro JM'],
+        value=['Lisnard JR', 'Lopez Moron A', 'Perez-Alvarez E', 'Di Pasquale A', 'Viloca-Puig JA', 'Burrieza-Lopez O', 'Van Scheppingen D', 'Arnold Ker L', 'Yoon YI', 'Bogomolov Jr. A', 'De Chaunac S', 'Wang YJ', 'Al-Khulaifi NG', 'Nadal R', 'Vassallo Arguello M', 'Kunitsyn I' ,'van Lottum J', 'Hantschk M', 'Bogomolov Jr. A', 'Gambill JM', 'Gallardo-Valles M', 'Mathieu PH', 'Schuettler P', 'De Voest R', 'Ramirez Hidalgo R', 'Bogomolov Jr. A', 'Di Mauro A', 'Scherrer JC', 'Chela JI', 'Ferrero JC', 'Hippensteel KJ', 'Ghareeb M', 'Matos Gil I' ,'Qureshi AUH', 'Navarro I', 'Van Der Meer N', 'Van Gemerden M', 'Lu YH', 'Gimeno-Traver D', 'Gruber KD', 'Wang YJ', 'Sanchez-de Luna JA', 'Khalfan S', 'del Potro JM', 'Querrey S', 'Van Der Duim A', 'Granollers M', 'Salva-Vidal B', 'Luque-Velasco D', 'Vicente F', 'de Bakker T', 'Haider-Maurer A', 'Devvarman S', 'Wang YJ', 'Fish M', 'Robredo T', 'Jun WS', 'Fornell-Mestres M', 'Stepanek R', 'Guzman JP', 'Guccione C', 'Rusevski P', 'Gard CI', 'Matsukevich D', 'Chekhov P', 'Hajji A', 'Podlipnik-Castillo H', 'Ghareeb M', 'Lopez Jaen MA' ,'Trujillo-Soler G', 'Sanchez-de Luna JA', 'del Potro JM', 'Estrella Burgos V', 'DeHeart R', 'Dutra da Silva D', 'Munoz de la Nava D', 'Riba P', 'Munoz de la Nava D', 'Delbonis F', 'Bautista Agut R', 'Van der Merwe I', 'Saavedra-Corvalan C', 'DeHeart R', 'Kuznetsov A' ,'Alawadhi O', 'Granollers G', 'Kuznetsov A', 'Ramos-Vinolas A', 'Carreno Busta P', 'Granollers G', 'Dutra Silva R', 'Al-Mutawa J', 'Viola M', 'Van der Merwe I', 'McClune M', 'Deen Heshaam AE', 'Stebe CM', 'Al-Mutawa J', 'Zayed MS', 'McDonald M', 'Nedovyesov A', 'Struff JL' ,'Ciorcila  P', 'McGee J', 'Herbert PH', 'Prashanth NVS', 'Cunha-Silva F', 'Hemery  C', 'Zhang Z', 'Zhang Z', 'Zayid MS', 'Munoz de la Nava D', 'de Minaur A', 'Ferreira Silva F', 'del Potro JM', 'Aragone J', 'Monteiro T', 'Mukund SK', 'Meligeni F'],
 
         inplace=True)
 
@@ -43,7 +43,7 @@ def main():
     # Adding rest of columns needed for predictions
     # Includes players who aren't in players_df
     # Mostly new players or players with low amount of games
-    all_columns.extend(['Al-Alawi SK', 'Bahrouzyan O', 'Marin L', 'Srichaphan N', 'Schuettler P', 'Prpic A', 'Youzhny A', 'Ascione A', 'Kucera V', 'Ancic I', 'Verdasco M', 'Rascon T', 'March O', 'Wang YT', 'Kutac R', 'Nader M', 'Statham J', 'Dolgopolov O', 'Yuksel A', 'Berrettini M', 'Altmaier D', 'Bonzi B', 'Muller A', 'Harris L', 'Majchrzak K', 'Molleker R', 'Leshem E', 'Koepfer D', 'Aragone J', 'Kypson P', 'Wu Y', 'Safiullin R', 'Ojeda Lara R', 'Caruana L', 'Popyrin A', 'Donski A', 'Korda S', 'Gaston H', 'Seyboth Wild T', 'Kecmanovic M', 'Hurkacz H', 'Piros Z', 'Baldi F', 'Coria F', 'Benchetrit E', 'Otte O', 'Kolar Z', 'Reinberg E', 'Huesler MA', 'Rodionov J', 'Gojo B', 'Humbert U', 'Brooksby J',
+    all_columns.extend(['Al-Alawi SK', 'Bahrouzyan O', 'Marin L', 'Srichaphan N', 'Schuettler P', 'Prpic A', 'Youzhny A', 'Ascione A', 'Kucera V', 'Ancic I', 'Verdasco M', 'Rascon T', 'March O', 'Wang YT', 'Kutac R', 'Nader M', 'Statham J', 'Dolgopolov O', 'Yuksel A', 'Berrettini M', 'Altmaier D', 'Bonzi B', 'Muller A', 'Harris L', 'Majchrzak K', 'Molleker R', 'Leshem E', 'Koepfer D', 'Aragone J', 'Kypson P', 'Wu Y', 'Safiullin R', 'Ojeda Lara R', 'Caruana L', 'Popyrin A', 'Donski A', 'Korda S', 'Gaston H', 'Seyboth Wild T', 'Kecmanovic M', 'Hurkacz H', 'Piros Z', 'Baldi F', 'Coria F', 'Benchetrit E', 'Otte O', 'Kolar Z', 'Reinberg E', 'Huesler MA', 'Rodionov J', 'Gojo B', 'Humbert U', 'Brooksby J', 'Tseng CH', 'Hoang A', 'Cerundolo F', 'Nava E', 'Davidovich Fokina A', 'Sinner J', 'Valkusz M', 'Basso A', 'Kirkin E', 'Jubb P', 'Gray A', 'Gromley C', 'Moroni G', 'Torpegaard M', 'Lee DH', 'Svajda Z', 'Roumane R', 'Dubrivnyy A', 'Avidzba A', 'Kachmazov A', 'Tabilo A', 'Ficovich JP', 'Ruusuvuori E', 'Diaz Acosta F', 'Shi B', 'Nakashima B', 'Mayot H', 'Alcaraz C', 'Musetti L', 'Barrios Vera MT', 'Varillas JP',
     'p1_weight_kg', 'p2_weight_kg', 'p1_height_cm', 'p2_height_cm', 'p1_handedness', 'p2_handedness', 'p1_backhand', 'p2_backhand', 'p1_rank', 'p2_rank', 'p1_game1', 'p2_game1', 'p1_game2', 'p2_game2', 'p1_game3', 'p2_game3', 'p1_game4', 'p2_game4', 'p1_game5', 'p2_game5', 'p1_sets', 'p2_sets', 'winner'])
 
     # Combining people with same name as 1 person since we can't differentiate them easily
@@ -75,7 +75,51 @@ def main():
         full_df[winner].loc[i] = 1
         full_df[loser].loc[i] = 1
 
-    print(full_df.head(30))
+        # Making player 1 be player who comes aplhabetically first and player 2 is the alphabetically second
+        # Player 1 will be 1 on winner column and player 2 is 0
+        if winner < loser:
+            full_df['winner'].loc[i] = 1
+
+            # Game points
+            full_df['p1_game1'].loc[i] = games_df['w1'].loc[i]
+            full_df['p2_game1'].loc[i] = games_df['l1'].loc[i]
+            full_df['p1_game2'].loc[i] = games_df['w2'].loc[i]
+            full_df['p2_game2'].loc[i] = games_df['l2'].loc[i]
+            full_df['p1_game3'].loc[i] = games_df['w3'].loc[i]
+            full_df['p2_game3'].loc[i] = games_df['l3'].loc[i]
+            full_df['p1_game4'].loc[i] = games_df['w4'].loc[i]
+            full_df['p2_game4'].loc[i] = games_df['l4'].loc[i]
+            full_df['p1_game5'].loc[i] = games_df['w5'].loc[i]
+            full_df['p2_game5'].loc[i] = games_df['l5'].loc[i]
+
+            # Won sets
+            if games_df['wsets'].loc[i] != None:
+                full_df['p1_sets'].loc[i] = games_df['wsets'].loc[i]
+            if games_df['lsets'].loc[i] != None:
+                full_df['p2_sets'].loc[i] = games_df['lsets'].loc[i]
+
+        else:
+            full_df['winner'].loc[i] = 0
+
+            # Game points
+            full_df['p1_game1'].loc[i] = games_df['l1'].loc[i]
+            full_df['p2_game1'].loc[i] = games_df['w1'].loc[i]
+            full_df['p1_game2'].loc[i] = games_df['l2'].loc[i]
+            full_df['p2_game2'].loc[i] = games_df['w2'].loc[i]
+            full_df['p1_game3'].loc[i] = games_df['l3'].loc[i]
+            full_df['p2_game3'].loc[i] = games_df['w3'].loc[i]
+            full_df['p1_game4'].loc[i] = games_df['l4'].loc[i]
+            full_df['p2_game4'].loc[i] = games_df['w4'].loc[i]
+            full_df['p1_game5'].loc[i] = games_df['l5'].loc[i]
+            full_df['p2_game5'].loc[i] = games_df['w5'].loc[i]
+
+            # Won sets
+            if games_df['wsets'].loc[i] != None:
+                full_df['p2_sets'].loc[i] = games_df['wsets'].loc[i]
+            if games_df['lsets'].loc[i] != None:
+                full_df['p1_sets'].loc[i] = games_df['lsets'].loc[i]
+
+    print(full_df)
 
 
 
