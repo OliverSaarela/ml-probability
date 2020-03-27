@@ -26,6 +26,7 @@ def main():
     games_df['loser'] = games_df['loser'].str.strip()
     # Changing NaN to 0
     games_df.fillna(0, inplace=True)
+    players_df.fillna(0, inplace=True)
 
     # Changing values in games_df
     games_df.replace(
@@ -46,7 +47,7 @@ def main():
     # Includes players who aren't in players_df
     # Mostly new players or players with low amount of games
     all_columns.extend(['Al-Alawi SK', 'Bahrouzyan O', 'Marin L', 'Srichaphan N', 'Schuettler P', 'Prpic A', 'Youzhny A', 'Ascione A', 'Kucera V', 'Ancic I', 'Verdasco M', 'Rascon T', 'March O', 'Wang YT', 'Kutac R', 'Nader M', 'Statham J', 'Dolgopolov O', 'Yuksel A', 'Berrettini M', 'Altmaier D', 'Bonzi B', 'Muller A', 'Harris L', 'Majchrzak K', 'Molleker R', 'Leshem E', 'Koepfer D', 'Aragone J', 'Kypson P', 'Wu Y', 'Safiullin R', 'Ojeda Lara R', 'Caruana L', 'Popyrin A', 'Donski A', 'Korda S', 'Gaston H', 'Seyboth Wild T', 'Kecmanovic M', 'Hurkacz H', 'Piros Z', 'Baldi F', 'Coria F', 'Benchetrit E', 'Otte O', 'Kolar Z', 'Reinberg E', 'Huesler MA', 'Rodionov J', 'Gojo B', 'Humbert U', 'Brooksby J', 'Tseng CH', 'Hoang A', 'Cerundolo F', 'Nava E', 'Davidovich Fokina A', 'Sinner J', 'Valkusz M', 'Basso A', 'Kirkin E', 'Jubb P', 'Gray A', 'Gromley C', 'Moroni G', 'Torpegaard M', 'Lee DH', 'Svajda Z', 'Roumane R', 'Dubrivnyy A', 'Avidzba A', 'Kachmazov A', 'Tabilo A', 'Ficovich JP', 'Ruusuvuori E', 'Diaz Acosta F', 'Shi B', 'Nakashima B', 'Mayot H', 'Alcaraz C', 'Musetti L', 'Barrios Vera MT', 'Varillas JP',
-    'p1_weight_kg', 'p2_weight_kg', 'p1_height_cm', 'p2_height_cm', 'p1_handedness', 'p2_handedness', 'p1_backhand', 'p2_backhand', 'p1_rank', 'p2_rank', 'p1_game1', 'p2_game1', 'p1_game2', 'p2_game2', 'p1_game3', 'p2_game3', 'p1_game4', 'p2_game4', 'p1_game5', 'p2_game5', 'p1_sets', 'p2_sets', 'winner'])
+    'p1_weight_kg', 'p2_weight_kg', 'p1_height_cm', 'p2_height_cm', 'p1_handedness', 'p2_handedness', 'p1_backhand', 'p2_backhand', 'p1_game1', 'p2_game1', 'p1_game2', 'p2_game2', 'p1_game3', 'p2_game3', 'p1_game4', 'p2_game4', 'p1_game5', 'p2_game5', 'p1_sets', 'p2_sets', 'winner'])
 
     # Combining people with same name as 1 person since we can't differentiate them easily
     # Example 'Bell A' and 'Bell A'
@@ -98,6 +99,24 @@ def main():
             full_df['p1_sets'].loc[i] = int(games_df['wsets'].loc[i])
             full_df['p2_sets'].loc[i] = int(games_df['lsets'].loc[i])
 
+            # Adding player data to full_df from players_df
+
+            # Player 1
+            if winner in list(players_df['full_name']):
+                full_df['p1_weight_kg'].loc[i] = players_df.loc[players_df['full_name'] == winner, 'weight_kg'].iloc[0]
+                full_df['p1_height_cm'].loc[i] = players_df.loc[players_df['full_name'] == winner, 'height_cm'].iloc[0]
+                full_df['p1_handedness'].loc[i] = players_df.loc[players_df['full_name'] == winner, 'handedness'].iloc[0]
+                full_df['p1_backhand'].loc[i] = players_df.loc[players_df['full_name'] == winner, 'backhand'].iloc[0]
+            
+            # Player 2
+            if loser in list(players_df['full_name']):
+                full_df['p2_weight_kg'].loc[i] = players_df.loc[players_df['full_name'] == loser, 'weight_kg'].iloc[0]
+                full_df['p2_height_cm'].loc[i] = players_df.loc[players_df['full_name'] == loser, 'height_cm'].iloc[0]
+                full_df['p2_handedness'].loc[i] = players_df.loc[players_df['full_name'] == loser, 'handedness'].iloc[0]
+                full_df['p2_backhand'].loc[i] = players_df.loc[players_df['full_name'] == loser, 'backhand'].iloc[0]
+
+            
+
         else:
             full_df['winner'].loc[i] = 0
 
@@ -117,7 +136,21 @@ def main():
             full_df['p2_sets'].loc[i] = int(games_df['wsets'].loc[i])
             full_df['p1_sets'].loc[i] = int(games_df['lsets'].loc[i])
 
-    print(full_df)
+            # Player 1
+            if loser in list(players_df['full_name']):
+                full_df['p1_weight_kg'].loc[i] = players_df.loc[players_df['full_name'] == loser, 'weight_kg'].iloc[0]
+                full_df['p1_height_cm'].loc[i] = players_df.loc[players_df['full_name'] == loser, 'height_cm'].iloc[0]
+                full_df['p1_handedness'].loc[i] = players_df.loc[players_df['full_name'] == loser, 'handedness'].iloc[0]
+                full_df['p1_backhand'].loc[i] = players_df.loc[players_df['full_name'] == loser, 'backhand'].iloc[0]
+            
+            # Player 2
+            if winner in list(players_df['full_name']):
+                full_df['p2_weight_kg'].loc[i] = players_df.loc[players_df['full_name'] == winner, 'weight_kg'].iloc[0]
+                full_df['p2_height_cm'].loc[i] = players_df.loc[players_df['full_name'] == winner, 'height_cm'].iloc[0]
+                full_df['p2_handedness'].loc[i] = players_df.loc[players_df['full_name'] == winner, 'handedness'].iloc[0]
+                full_df['p2_backhand'].loc[i] = players_df.loc[players_df['full_name'] == winner, 'backhand'].iloc[0]
+
+    print(full_df.head(1))
 
 
 
