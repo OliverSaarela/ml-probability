@@ -21,6 +21,8 @@ def main():
     # Removing . from names
     games_df['winner'] = games_df['winner'].str.replace('.', '')
     games_df['loser'] = games_df['loser'].str.replace('.', '')
+    #Changing double space to single space
+    players_df['full_name'] = players_df['full_name'].str.replace('  ', ' ')
     # Removing whitespace
     games_df['winner'] = games_df['winner'].str.strip()
     games_df['loser'] = games_df['loser'].str.strip()
@@ -31,9 +33,9 @@ def main():
     # Changing values in games_df
     games_df.replace(
         # Old values
-        to_replace=['Lisnard J', 'Lopez-Moron A', 'Alvarez E', 'di Pasquale A', 'Viloca JA', 'Burrieza O', 'van Scheppingen D', 'Arnold L', 'Yoon Y', 'Bogomolov JrA', 'de Chaunac S', 'Wang Y', 'Al Khulaifi NG', 'Nadal-Parera R', 'Vassallo-Arguello M', 'Kunitcin I', 'Van Lottum J' ,'Hantschek M', 'Bogomolov Jr A', 'Gambill J M', 'Gallardo Valles M', 'Mathieu P', 'Schuttler P', 'de Voest R', 'Ramirez-Hidalgo R', 'Bogomolov A', 'di Mauro A', 'Scherrer J', 'Chela J', 'Ferrero J', 'Hippensteel K', 'Al Ghareeb M', 'Matos-Gil I', 'Qureshi A', 'Navarro-Pastor I', 'van der Meer N', 'van Gemerden M', 'Lu Y', 'Gimeno D', 'Gruber K', 'Wang Y Jr', 'Sanchez de Luna JA', 'Sultan-Khalfan A', 'Del Potro JM', 'Querry S', 'Van der Dium A', 'Granollers-Pujol M', 'Salva B', 'Luque D', 'Vicente M', 'De Bakker T', 'Haider-Mauer A', 'Dev Varman S', 'Wang YJr', 'Fish A', 'Robredo R', 'Jun W', 'Fornell M', 'Stepanek M', 'Guzman J', 'Guccione A', 'Ruevski P', 'Gard C', 'Matsukevitch D', 'Chekov P', 'Haji A', 'Podlipnik H', 'Al-Ghareeb M', 'Lopez-Jaen MA', 'Trujillo G', 'Sanchez De Luna J', 'Del Potro J', 'Estrella V', 'De Heart R', 'Silva D', 'Munoz de La Nava D', 'Riba-Madrid P', 'Munoz-De La Nava D', 'Del Bonis F', 'Bautista R', 'Van Der Merwe I', 'Saavedra Corvalan C', 'Deheart R', 'Kuznetsov Al', 'Awadhy O', 'Granollers Pujol G', 'Kuznetsov An', 'Ramos A', 'Carreno-Busta P' ,'Granollers-Pujol G', 'Dutra Da Silva R', 'Al Mutawa J', 'Viola Mat', 'Van D Merwe I', 'Mcclune M', 'Deen Heshaam A', 'Stebe C-M', 'Ali Mutawa JM', 'Zayed M S', 'Mcdonald M', 'Nedovyesov O', 'Struff J-L', 'Ciorcila P', 'Mcgee J', 'Herbert P-H', 'Prashanth V', 'Silva F' ,'Hemery C', 'Zhang Ze', 'Zhang Zh', 'Zayid M S', 'Munoz De La Nava D', 'De Minaur A', 'Silva FF', 'Del Potro J M', 'Aragone JC', 'Monteiro J', 'Mukund S', 'Meligeni Rodrigues F'],
+        to_replace=['Lisnard J', 'Lopez-Moron A', 'Alvarez E', 'di Pasquale A', 'Viloca JA', 'Burrieza O', 'van Scheppingen D', 'Arnold L', 'Yoon Y', 'Bogomolov JrA', 'de Chaunac S', 'Wang Y', 'Al Khulaifi NG', 'Nadal-Parera R', 'Vassallo-Arguello M', 'Kunitcin I', 'Van Lottum J' ,'Hantschek M', 'Bogomolov Jr A', 'Gambill J M', 'Gallardo Valles M', 'Mathieu P', 'Schuttler P', 'de Voest R', 'Ramirez-Hidalgo R', 'Bogomolov A', 'di Mauro A', 'Scherrer J', 'Chela J', 'Ferrero J', 'Hippensteel K', 'Al Ghareeb M', 'Matos-Gil I', 'Qureshi A', 'Navarro-Pastor I', 'van der Meer N', 'van Gemerden M', 'Lu Y', 'Gimeno D', 'Gruber K', 'Wang Y Jr', 'Sanchez de Luna JA', 'Sultan-Khalfan A', 'Del Potro JM', 'Querry S', 'Van der Dium A', 'Granollers-Pujol M', 'Salva B', 'Luque D', 'Vicente M', 'De Bakker T', 'Haider-Mauer A', 'Dev Varman S', 'Wang YJr', 'Fish A', 'Robredo R', 'Jun W', 'Fornell M', 'Stepanek M', 'Guzman J', 'Guccione A', 'Ruevski P', 'Gard C', 'Matsukevitch D', 'Chekov P', 'Haji A', 'Podlipnik H', 'Al-Ghareeb M', 'Lopez-Jaen MA', 'Trujillo G', 'Sanchez De Luna J', 'Del Potro J', 'Estrella V', 'De Heart R', 'Silva D', 'Munoz de La Nava D', 'Riba-Madrid P', 'Munoz-De La Nava D', 'Del Bonis F', 'Bautista R', 'Van Der Merwe I', 'Saavedra Corvalan C', 'Deheart R', 'Kuznetsov Al', 'Awadhy O', 'Granollers Pujol G', 'Kuznetsov An', 'Ramos A', 'Carreno-Busta P' ,'Granollers-Pujol G', 'Dutra Da Silva R', 'Al Mutawa J', 'Viola Mat', 'Van D Merwe I', 'Mcclune M', 'Deen Heshaam A', 'Stebe C-M', 'Ali Mutawa JM', 'Zayed M S', 'Mcdonald M', 'Nedovyesov O', 'Struff J-L', 'Mcgee J', 'Herbert P-H', 'Prashanth V', 'Silva F', 'Zhang Ze', 'Zhang Zh', 'Zayid M S', 'Munoz De La Nava D', 'De Minaur A', 'Silva FF', 'Del Potro J M', 'Aragone JC', 'Monteiro J', 'Mukund S', 'Meligeni Rodrigues F'],
         # New Values
-        value=['Lisnard JR', 'Lopez Moron A', 'Perez-Alvarez E', 'Di Pasquale A', 'Viloca-Puig JA', 'Burrieza-Lopez O', 'Van Scheppingen D', 'Arnold Ker L', 'Yoon YI', 'Bogomolov Jr. A', 'De Chaunac S', 'Wang YJ', 'Al-Khulaifi NG', 'Nadal R', 'Vassallo Arguello M', 'Kunitsyn I' ,'van Lottum J', 'Hantschk M', 'Bogomolov Jr. A', 'Gambill JM', 'Gallardo-Valles M', 'Mathieu PH', 'Schuettler P', 'De Voest R', 'Ramirez Hidalgo R', 'Bogomolov Jr. A', 'Di Mauro A', 'Scherrer JC', 'Chela JI', 'Ferrero JC', 'Hippensteel KJ', 'Ghareeb M', 'Matos Gil I' ,'Qureshi AUH', 'Navarro I', 'Van Der Meer N', 'Van Gemerden M', 'Lu YH', 'Gimeno-Traver D', 'Gruber KD', 'Wang YJ', 'Sanchez-de Luna JA', 'Khalfan S', 'del Potro JM', 'Querrey S', 'Van Der Duim A', 'Granollers M', 'Salva-Vidal B', 'Luque-Velasco D', 'Vicente F', 'de Bakker T', 'Haider-Maurer A', 'Devvarman S', 'Wang YJ', 'Fish M', 'Robredo T', 'Jun WS', 'Fornell-Mestres M', 'Stepanek R', 'Guzman JP', 'Guccione C', 'Rusevski P', 'Gard CI', 'Matsukevich D', 'Chekhov P', 'Hajji A', 'Podlipnik-Castillo H', 'Ghareeb M', 'Lopez Jaen MA' ,'Trujillo-Soler G', 'Sanchez-de Luna JA', 'del Potro JM', 'Estrella Burgos V', 'DeHeart R', 'Dutra da Silva D', 'Munoz de la Nava D', 'Riba P', 'Munoz de la Nava D', 'Delbonis F', 'Bautista Agut R', 'Van der Merwe I', 'Saavedra-Corvalan C', 'DeHeart R', 'Kuznetsov A' ,'Alawadhi O', 'Granollers G', 'Kuznetsov A', 'Ramos-Vinolas A', 'Carreno Busta P', 'Granollers G', 'Dutra Silva R', 'Al-Mutawa J', 'Viola M', 'Van der Merwe I', 'McClune M', 'Deen Heshaam AE', 'Stebe CM', 'Al-Mutawa J', 'Zayed MS', 'McDonald M', 'Nedovyesov A', 'Struff JL' ,'Ciorcila  P', 'McGee J', 'Herbert PH', 'Prashanth NVS', 'Cunha-Silva F', 'Hemery  C', 'Zhang Z', 'Zhang Z', 'Zayid MS', 'Munoz de la Nava D', 'de Minaur A', 'Ferreira Silva F', 'del Potro JM', 'Aragone J', 'Monteiro T', 'Mukund SK', 'Meligeni F'],
+        value=['Lisnard JR', 'Lopez Moron A', 'Perez-Alvarez E', 'Di Pasquale A', 'Viloca-Puig JA', 'Burrieza-Lopez O', 'Van Scheppingen D', 'Arnold Ker L', 'Yoon YI', 'Bogomolov Jr. A', 'De Chaunac S', 'Wang YJ', 'Al-Khulaifi NG', 'Nadal R', 'Vassallo Arguello M', 'Kunitsyn I' ,'van Lottum J', 'Hantschk M', 'Bogomolov Jr. A', 'Gambill JM', 'Gallardo-Valles M', 'Mathieu PH', 'Schuettler P', 'De Voest R', 'Ramirez Hidalgo R', 'Bogomolov Jr. A', 'Di Mauro A', 'Scherrer JC', 'Chela JI', 'Ferrero JC', 'Hippensteel KJ', 'Ghareeb M', 'Matos Gil I' ,'Qureshi AUH', 'Navarro I', 'Van Der Meer N', 'Van Gemerden M', 'Lu YH', 'Gimeno-Traver D', 'Gruber KD', 'Wang YJ', 'Sanchez-de Luna JA', 'Khalfan S', 'del Potro JM', 'Querrey S', 'Van Der Duim A', 'Granollers M', 'Salva-Vidal B', 'Luque-Velasco D', 'Vicente F', 'de Bakker T', 'Haider-Maurer A', 'Devvarman S', 'Wang YJ', 'Fish M', 'Robredo T', 'Jun WS', 'Fornell-Mestres M', 'Stepanek R', 'Guzman JP', 'Guccione C', 'Rusevski P', 'Gard CI', 'Matsukevich D', 'Chekhov P', 'Hajji A', 'Podlipnik-Castillo H', 'Ghareeb M', 'Lopez Jaen MA' ,'Trujillo-Soler G', 'Sanchez-de Luna JA', 'del Potro JM', 'Estrella Burgos V', 'DeHeart R', 'Dutra da Silva D', 'Munoz de la Nava D', 'Riba P', 'Munoz de la Nava D', 'Delbonis F', 'Bautista Agut R', 'Van der Merwe I', 'Saavedra-Corvalan C', 'DeHeart R', 'Kuznetsov A' ,'Alawadhi O', 'Granollers G', 'Kuznetsov A', 'Ramos-Vinolas A', 'Carreno Busta P', 'Granollers G', 'Dutra Silva R', 'Al-Mutawa J', 'Viola M', 'Van der Merwe I', 'McClune M', 'Deen Heshaam AE', 'Stebe CM', 'Al-Mutawa J', 'Zayed MS', 'McDonald M', 'Nedovyesov A', 'Struff JL', 'McGee J', 'Herbert PH', 'Prashanth NVS', 'Cunha-Silva F', 'Zhang Z', 'Zhang Z', 'Zayid MS', 'Munoz de la Nava D', 'de Minaur A', 'Ferreira Silva F', 'del Potro JM', 'Aragone J', 'Monteiro T', 'Mukund SK', 'Meligeni F'],
 
         inplace=True)
 
@@ -150,26 +152,22 @@ def main():
                 full_df['p2_handedness'].loc[i] = players_df.loc[players_df['full_name'] == winner, 'handedness'].iloc[0]
                 full_df['p2_backhand'].loc[i] = players_df.loc[players_df['full_name'] == winner, 'backhand'].iloc[0]
 
-    print(full_df.head(1))
-
-
-
-
-    # If Player 1 wins winner = 1 and if Player 2 wins winner = 0
-    train_df['Winner'].loc[train_df['Winner'] == train_df['Player_1']] = 1
-    train_df['Winner'].loc[train_df['Winner'] == train_df['Player_2']] = 0
-
+    # Adding surface types for matches
+    full_df['surface'] = games_df['surface']
     
-    
-    # Change Player_1, Player_2 and surface to onehotencoding
-    numeric_train_df = pd.get_dummies(train_df, prefix=['Player_1', 'Player_2', 'Surface'], columns=['Player_1', 'Player_2', 'Surface'])
 
-    # Make Winner int from object
-    numeric_train_df['Winner'] = pd.to_numeric(train_df['Winner'], downcast = 'integer')
-    print(numeric_train_df)
+    # Converting all text to numbers
+    full_df.replace(to_replace=['Right-Handed', 'Left-Handed', 'Ambidextrous', 'One-Handed Backhand', 'Two-Handed Backhand'],
+                    value=[1, 2, 3, 1, 2],
+                    inplace=True)
+
+    full_df = pd.get_dummies(full_df, columns=['surface'])
+
+    print(full_df)
+
 
     # Splitting dataframe to train and test data
-    train, test = train_test_split(numeric_train_df, test_size = 0.01)
+    train, test = train_test_split(full_df, test_size = 0.01)
 
 
     target = train.pop('Winner')
@@ -207,24 +205,16 @@ def main():
 
 
     # Pick players to test
-    # Making an empty dataframe for the pick and filling it with 0
-    COLUMN_NAMES = list(numeric_train_df.columns)
-    BASE_VALUES = list()
-    for i in range(len(COLUMN_NAMES)):
-        BASE_VALUES.append(0)
-
-    BASE_VALUES = np.array(list(BASE_VALUES))
-
-    picked_df = pd.DataFrame(columns = COLUMN_NAMES)
+    picked_df = pd.DataFrame(columns = all_columns)
     picked_df.loc[0] = BASE_VALUES
     print(picked_df)
 
     p1 = str(input('Name Player 1: '))
     p2 = str(input('Name Player 2: '))
     surface = str(input('Name surface: '))
-    picked_df['Player_1_' + p1].loc[picked_df['Player_1_' + p1] == picked_df['Player_1_' + p1]] = 1
-    picked_df['Player_2_' + p2].loc[picked_df['Player_2_' + p2] == picked_df['Player_2_' + p2]] = 1
-    picked_df['Surface_' + surface].loc[picked_df['Surface_' + surface] == picked_df['Surface_' + surface]] = 1
+    picked_df[p1].loc[0] = 1
+    picked_df[p2].loc[0] = 1
+    picked_df['surface_' + surface].loc[0] = 1
 
     print(picked_df)
 
