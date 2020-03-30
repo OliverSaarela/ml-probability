@@ -170,10 +170,10 @@ def main():
     train, test = train_test_split(full_df, test_size = 0.01)
 
 
-    target = train.pop('Winner')
+    target = train.pop('winner')
     dataset = tf.data.Dataset.from_tensor_slices((train.values, target.values))
 
-    test_target = test.pop('Winner')
+    test_target = test.pop('winner')
     dataset_2 = tf.data.Dataset.from_tensor_slices((test.values, test_target.values))
 
     for feat, targ in dataset.take(5):
@@ -196,6 +196,7 @@ def main():
                     )
         return model
 
+    # Training the model
     model = get_compiled_model()
     model.fit(train_dataset, epochs=1)
 
@@ -222,7 +223,7 @@ def main():
         picked_df[i] = pd.to_numeric(picked_df[i], downcast = 'integer')
 
 
-    pick_target = picked_df.pop('Winner')
+    pick_target = picked_df.pop('winner')
     picked_dataset = tf.data.Dataset.from_tensor_slices((picked_df.values, pick_target.values))
 
     picked_dataset = picked_dataset.shuffle(len(picked_df)).batch(1)
