@@ -189,8 +189,10 @@ def main():
     # Building the model
     def get_compiled_model():
         model = tf.keras.Sequential([
-            tf.keras.layers.Dense(128, activation='relu'),
-            tf.keras.layers.Dense(128, activation='relu'),
+            tf.keras.layers.Dense(64, activation='relu'),
+            # tf.keras.layers.Dropout(0.5),
+            # tf.keras.layers.Dense(256, activation='relu'),
+            # tf.keras.layers.Dropout(0.5),
             tf.keras.layers.Dense(1, activation='sigmoid')
         ])
 
