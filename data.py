@@ -9,6 +9,88 @@ import tensorflow as tf
 from sklearn.model_selection import train_test_split
 
 def main():
+    update = input('Do you want to update data? Default n. y/n: ')
+    if update is 'y':
+        download_and_save()
+        save_fulldata()
+
+    train_and_save_model()
+
+def get_compiled_model():
+        model = tf.keras.Sequential([
+            tf.keras.layers.Dense(64, activation='relu'),
+            tf.keras.layers.Dense(1, activation='sigmoid')
+        ])
+
+        model.compile(optimizer='adam',
+                        loss=tf.keras.losses.BinaryCrossentropy(from_logits=True),
+                        metrics=['accuracy']
+                    )
+        return model
+
+def train_and_save_model():
+    full_df = pd.read_csv('./data/full_data.csv')
+
+    # Splitting dataframe to train and test data
+    train, test = train_test_split(full_df, test_size = 0.1)
+
+    target = train.pop('winner')
+    dataset = tf.data.Dataset.from_tensor_slices((train.values, target.values))
+
+    test_target = test.pop('winner')
+    dataset_2 = tf.data.Dataset.from_tensor_slices((test.values, test_target.values))
+
+    for feat, targ in dataset.take(5):
+        print ('Features: {}, Target: {}'.format(feat, targ))
+
+    train_dataset = dataset.shuffle(len(train)).batch(50)
+    test_dataset = dataset_2.shuffle(len(test)).batch(5)
+
+    # Training the model
+    model = get_compiled_model()
+    model.fit(train_dataset, epochs=5)
+
+    test_loss, test_accuracy = model.evaluate(test_dataset)
+
+    print('\n\nTest Loss {}, Test Accuracy {}'.format(test_loss, test_accuracy))
+
+    # Pick players to test
+    VALUES = []
+    for i in range(len(full_df.columns)):
+        VALUES.append(0)
+
+    VALUES = np.array(VALUES)
+
+    picked_df = pd.DataFrame(columns=full_df.columns)
+    picked_df.loc[0] = VALUES
+    print(picked_df)
+
+    #pd.to_numeric(picked_df)
+
+    p1 = str(input('Name Player 1: '))
+    p2 = str(input('Name Player 2: '))
+    surface = str(input('Name surface: '))
+    picked_df[p1].loc[0] = 1
+    picked_df[p2].loc[0] = 1
+    picked_df['surface_' + surface].loc[0] = 1
+
+    print(picked_df)
+
+    for i in picked_df.columns:
+        picked_df[i] = pd.to_numeric(picked_df[i], downcast = 'integer')
+
+
+    pick_target = picked_df.pop('winner')
+    picked_dataset = tf.data.Dataset.from_tensor_slices((picked_df.values, pick_target.values))
+
+    picked_dataset = picked_dataset.shuffle(len(picked_df)).batch(1)
+
+    predictions = model.predict(picked_dataset)
+
+    #Show results
+    print(p1, 'Win chance against', p2, 'on', surface, 'court: {:.2%}'.format(predictions[0][0]))
+
+def download_and_save():
     all_games_path = 'https://query.data.world/s/hwr7vh7cfuhbbr3xmddeyc4di2jk5r' # Url for games data
 
     all_players_path = 'https://query.data.world/s/ywfgaydmlp4lha4dlitbpf3f3npppd' # Url for players data
@@ -40,7 +122,13 @@ def main():
         inplace=True)
 
     print(games_df)
+    games_df.to_csv('./data/game_data.csv', index=False)
+    players_df.to_csv('./data/player_data.csv', index=False)
 
+def save_fulldata():
+
+    games_df = pd.read_csv('./data/game_data.csv')
+    players_df = pd.read_csv('./data/player_data.csv')
 
     # Making final dataframe column names from players_df
     all_columns = list(players_df['full_name'])
@@ -55,7 +143,6 @@ def main():
     # Example 'Bell A' and 'Bell A'
     # We would need a better database if we would want to get rid of this problem
     all_columns = np.unique(all_columns)
-
 
     # Making all cell values 0 for a row
     BASE_VALUES = []
@@ -117,8 +204,6 @@ def main():
                 full_df['p2_handedness'].loc[i] = players_df.loc[players_df['full_name'] == loser, 'handedness'].iloc[0]
                 full_df['p2_backhand'].loc[i] = players_df.loc[players_df['full_name'] == loser, 'backhand'].iloc[0]
 
-            
-
         else:
             full_df['winner'].loc[i] = 0
 
@@ -155,7 +240,6 @@ def main():
     # Adding surface types for matches
     full_df['surface'] = games_df['surface']
     
-
     # Converting all text to numbers
     full_df.replace(to_replace=['Right-Handed', 'Left-Handed', 'Ambidextrous', 'One-Handed Backhand', 'Two-Handed Backhand'],
                     value=[1, 2, 3, 1, 2],
@@ -167,85 +251,9 @@ def main():
     full_df[['p1_game2', 'p1_game3', 'p2_game2', 'p2_game3']] = full_df[['p1_game2', 'p1_game3', 'p2_game2', 'p2_game3']].apply(pd.to_numeric)
 
     print(full_df)
-    
 
+    full_df.to_csv('./data/full_data.csv', index=False)
 
-    # Splitting dataframe to train and test data
-    train, test = train_test_split(full_df, test_size = 0.01)
-
-
-    target = train.pop('winner')
-    dataset = tf.data.Dataset.from_tensor_slices((train.values, target.values))
-
-    test_target = test.pop('winner')
-    dataset_2 = tf.data.Dataset.from_tensor_slices((test.values, test_target.values))
-
-    for feat, targ in dataset.take(5):
-        print ('Features: {}, Target: {}'.format(feat, targ))
-
-    train_dataset = dataset.shuffle(len(train)).batch(50)
-    test_dataset = dataset_2.shuffle(len(test)).batch(5)
-
-    # Building the model
-    def get_compiled_model():
-        model = tf.keras.Sequential([
-            tf.keras.layers.Dense(64, activation='relu'),
-            # tf.keras.layers.Dropout(0.5),
-            # tf.keras.layers.Dense(256, activation='relu'),
-            # tf.keras.layers.Dropout(0.5),
-            tf.keras.layers.Dense(1, activation='sigmoid')
-        ])
-
-        model.compile(optimizer='adam',
-                        loss=tf.keras.losses.BinaryCrossentropy(from_logits=True),
-                        metrics=['accuracy']
-                    )
-        return model
-
-    # Training the model
-    model = get_compiled_model()
-    model.fit(train_dataset, epochs=1)
-
-    test_loss, test_accuracy = model.evaluate(test_dataset)
-
-    print('\n\nTest Loss {}, Test Accuracy {}'.format(test_loss, test_accuracy))
-
-
-    # Pick players to test
-    VALUES = []
-    for i in range(len(full_df.columns)):
-        VALUES.append(0)
-
-    VALUES = np.array(VALUES)
-
-    picked_df = pd.DataFrame(columns=full_df.columns)
-    picked_df.loc[0] = VALUES
-    print(picked_df)
-
-    #pd.to_numeric(picked_df)
-
-    p1 = str(input('Name Player 1: '))
-    p2 = str(input('Name Player 2: '))
-    surface = str(input('Name surface: '))
-    picked_df[p1].loc[0] = 1
-    picked_df[p2].loc[0] = 1
-    picked_df['surface_' + surface].loc[0] = 1
-
-    print(picked_df)
-
-    for i in picked_df.columns:
-        picked_df[i] = pd.to_numeric(picked_df[i], downcast = 'integer')
-
-
-    pick_target = picked_df.pop('winner')
-    picked_dataset = tf.data.Dataset.from_tensor_slices((picked_df.values, pick_target.values))
-
-    picked_dataset = picked_dataset.shuffle(len(picked_df)).batch(1)
-
-    predictions = model.predict(picked_dataset)
-
-    #Show results
-    print(p1, 'Win chance against', p2, 'on', surface, 'court: {:.2%}'.format(predictions[0][0]))
 
 if __name__ == "__main__":
     main()
