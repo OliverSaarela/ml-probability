@@ -14,7 +14,12 @@ def main():
         download_and_save()
         save_fulldata()
 
-    train_and_save_model()
+    model = train_and_save_model()
+    while True:
+        cont = input('Do you want to predict? Default y. y/n: ')
+        if cont is 'n':
+            break
+        make_prediction(model)
 
 def get_compiled_model():
         model = tf.keras.Sequential([
@@ -54,6 +59,12 @@ def train_and_save_model():
 
     print('\n\nTest Loss {}, Test Accuracy {}'.format(test_loss, test_accuracy))
 
+    return model
+
+def make_prediction(model):
+    full_df = pd.read_csv('./data/full_data.csv')
+    players_df = pd.read_csv('./data/player_data.csv')
+
     # Pick players to test
     VALUES = []
     for i in range(len(full_df.columns)):
@@ -74,11 +85,38 @@ def train_and_save_model():
     picked_df[p2].loc[0] = 1
     picked_df['surface_' + surface].loc[0] = 1
 
+    # Adding correct data to playerinfo to match the way it is done in the training data.
+    if p1 < p2:
+        # Making p1 Player 1
+        if p1 in list(players_df['full_name']):
+            picked_df['p1_weight_kg'].loc[i] = players_df.loc[players_df['full_name'] == p1, 'weight_kg'].iloc[0]
+            picked_df['p1_height_cm'].loc[i] = players_df.loc[players_df['full_name'] == p1, 'height_cm'].iloc[0]
+            picked_df['p1_handedness'].loc[i] = players_df.loc[players_df['full_name'] == p1, 'handedness'].iloc[0]
+            picked_df['p1_backhand'].loc[i] = players_df.loc[players_df['full_name'] == p1, 'backhand'].iloc[0]
+        
+        # Making p2 Player 2
+        if p2 in list(players_df['full_name']):
+            picked_df['p2_weight_kg'].loc[i] = players_df.loc[players_df['full_name'] == p2, 'weight_kg'].iloc[0]
+            picked_df['p2_height_cm'].loc[i] = players_df.loc[players_df['full_name'] == p2, 'height_cm'].iloc[0]
+            picked_df['p2_handedness'].loc[i] = players_df.loc[players_df['full_name'] == p2, 'handedness'].iloc[0]
+            picked_df['p2_backhand'].loc[i] = players_df.loc[players_df['full_name'] == p2, 'backhand'].iloc[0]
+
+    else:
+        # Making p2 Player 1
+        if p2 in list(players_df['full_name']):
+            picked_df['p1_weight_kg'].loc[i] = players_df.loc[players_df['full_name'] == p2, 'weight_kg'].iloc[0]
+            picked_df['p1_height_cm'].loc[i] = players_df.loc[players_df['full_name'] == p2, 'height_cm'].iloc[0]
+            picked_df['p1_handedness'].loc[i] = players_df.loc[players_df['full_name'] == p2, 'handedness'].iloc[0]
+            picked_df['p1_backhand'].loc[i] = players_df.loc[players_df['full_name'] == p2, 'backhand'].iloc[0]
+            
+        # Making p1 Player 2
+        if p1 in list(players_df['full_name']):
+            picked_df['p2_weight_kg'].loc[i] = players_df.loc[players_df['full_name'] == p1, 'weight_kg'].iloc[0]
+            picked_df['p2_height_cm'].loc[i] = players_df.loc[players_df['full_name'] == p1, 'height_cm'].iloc[0]
+            picked_df['p2_handedness'].loc[i] = players_df.loc[players_df['full_name'] == p1, 'handedness'].iloc[0]
+            picked_df['p2_backhand'].loc[i] = players_df.loc[players_df['full_name'] == p1, 'backhand'].iloc[0]
+
     print(picked_df)
-
-    for i in picked_df.columns:
-        picked_df[i] = pd.to_numeric(picked_df[i], downcast = 'integer')
-
 
     pick_target = picked_df.pop('winner')
     picked_dataset = tf.data.Dataset.from_tensor_slices((picked_df.values, pick_target.values))
@@ -120,6 +158,10 @@ def download_and_save():
         value=['Lisnard JR', 'Lopez Moron A', 'Perez-Alvarez E', 'Di Pasquale A', 'Viloca-Puig JA', 'Burrieza-Lopez O', 'Van Scheppingen D', 'Arnold Ker L', 'Yoon YI', 'Bogomolov Jr. A', 'De Chaunac S', 'Wang YJ', 'Al-Khulaifi NG', 'Nadal R', 'Vassallo Arguello M', 'Kunitsyn I' ,'van Lottum J', 'Hantschk M', 'Bogomolov Jr. A', 'Gambill JM', 'Gallardo-Valles M', 'Mathieu PH', 'Schuettler P', 'De Voest R', 'Ramirez Hidalgo R', 'Bogomolov Jr. A', 'Di Mauro A', 'Scherrer JC', 'Chela JI', 'Ferrero JC', 'Hippensteel KJ', 'Ghareeb M', 'Matos Gil I' ,'Qureshi AUH', 'Navarro I', 'Van Der Meer N', 'Van Gemerden M', 'Lu YH', 'Gimeno-Traver D', 'Gruber KD', 'Wang YJ', 'Sanchez-de Luna JA', 'Khalfan S', 'del Potro JM', 'Querrey S', 'Van Der Duim A', 'Granollers M', 'Salva-Vidal B', 'Luque-Velasco D', 'Vicente F', 'de Bakker T', 'Haider-Maurer A', 'Devvarman S', 'Wang YJ', 'Fish M', 'Robredo T', 'Jun WS', 'Fornell-Mestres M', 'Stepanek R', 'Guzman JP', 'Guccione C', 'Rusevski P', 'Gard CI', 'Matsukevich D', 'Chekhov P', 'Hajji A', 'Podlipnik-Castillo H', 'Ghareeb M', 'Lopez Jaen MA' ,'Trujillo-Soler G', 'Sanchez-de Luna JA', 'del Potro JM', 'Estrella Burgos V', 'DeHeart R', 'Dutra da Silva D', 'Munoz de la Nava D', 'Riba P', 'Munoz de la Nava D', 'Delbonis F', 'Bautista Agut R', 'Van der Merwe I', 'Saavedra-Corvalan C', 'DeHeart R', 'Kuznetsov A' ,'Alawadhi O', 'Granollers G', 'Kuznetsov A', 'Ramos-Vinolas A', 'Carreno Busta P', 'Granollers G', 'Dutra Silva R', 'Al-Mutawa J', 'Viola M', 'Van der Merwe I', 'McClune M', 'Deen Heshaam AE', 'Stebe CM', 'Al-Mutawa J', 'Zayed MS', 'McDonald M', 'Nedovyesov A', 'Struff JL', 'McGee J', 'Herbert PH', 'Prashanth NVS', 'Cunha-Silva F', 'Zhang Z', 'Zhang Z', 'Zayid MS', 'Munoz de la Nava D', 'de Minaur A', 'Ferreira Silva F', 'del Potro JM', 'Aragone J', 'Monteiro T', 'Mukund SK', 'Meligeni F', 0],
 
         inplace=True)
+
+    players_df.replace(to_replace=['Right-Handed', 'Left-Handed', 'Ambidextrous', 'One-Handed Backhand', 'Two-Handed Backhand'],
+                    value=[1, 2, 3, 1, 2],
+                    inplace=True)
 
     print(games_df)
     games_df.to_csv('./data/game_data.csv', index=False)
@@ -241,10 +283,6 @@ def save_fulldata():
     full_df['surface'] = games_df['surface']
     
     # Converting all text to numbers
-    full_df.replace(to_replace=['Right-Handed', 'Left-Handed', 'Ambidextrous', 'One-Handed Backhand', 'Two-Handed Backhand'],
-                    value=[1, 2, 3, 1, 2],
-                    inplace=True)
-
     full_df = pd.get_dummies(full_df, columns=['surface'])
 
     # Changing object dtypes to numeric
