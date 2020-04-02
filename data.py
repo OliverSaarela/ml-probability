@@ -76,7 +76,7 @@ def make_prediction(model):
     picked_df.loc[0] = VALUES
     print(picked_df)
 
-    #pd.to_numeric(picked_df)
+    
 
     p1 = str(input('Name Player 1: '))
     p2 = str(input('Name Player 2: '))
@@ -115,8 +115,8 @@ def make_prediction(model):
             picked_df['p2_height_cm'].loc[i] = players_df.loc[players_df['full_name'] == p1, 'height_cm'].iloc[0]
             picked_df['p2_handedness'].loc[i] = players_df.loc[players_df['full_name'] == p1, 'handedness'].iloc[0]
             picked_df['p2_backhand'].loc[i] = players_df.loc[players_df['full_name'] == p1, 'backhand'].iloc[0]
-
-    print(picked_df)
+    
+    picked_df = picked_df.apply(pd.to_numeric)
 
     pick_target = picked_df.pop('winner')
     picked_dataset = tf.data.Dataset.from_tensor_slices((picked_df.values, pick_target.values))
