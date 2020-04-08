@@ -13,6 +13,9 @@ def main():
     if update is 'y':
         download_and_save()
         save_fulldata()
+        
+    modelupdate = input('Do you want to retrain the model? It rewrites over the old one. Default n. y/n: ')
+    if modelupdate is 'y':
         train_and_save_model()
 
     model = tf.keras.models.load_model('./data/saved_model.h5')
@@ -24,6 +27,7 @@ def main():
 
 def get_compiled_model():
         model = tf.keras.Sequential([
+            tf.keras.layers.Dense(64, activation='relu', input_shape=(10585,)),
             tf.keras.layers.Dense(64, activation='relu'),
             tf.keras.layers.Dense(1, activation='sigmoid')
         ])
