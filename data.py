@@ -13,8 +13,9 @@ def main():
     if update is 'y':
         download_and_save()
         save_fulldata()
+        train_and_save_model()
 
-    model = train_and_save_model()
+    model = tf.keras.models.load_model('./data/saved_model.h5')
     while True:
         cont = input('Do you want to predict? Default y. y/n: ')
         if cont is 'n':
@@ -59,7 +60,7 @@ def train_and_save_model():
 
     print('\n\nTest Loss {}, Test Accuracy {}'.format(test_loss, test_accuracy))
 
-    return model
+    model.save('./data/saved_model.h5')
 
 def make_prediction(model):
     full_df = pd.read_csv('./data/full_data.csv')
@@ -81,12 +82,13 @@ def make_prediction(model):
     p1 = str(input('Name Player 1: '))
     p2 = str(input('Name Player 2: '))
     surface = str(input('Name surface: '))
-    picked_df[p1].loc[0] = 1
-    picked_df[p2].loc[0] = 1
     picked_df['surface_' + surface].loc[0] = 1
 
     # Adding correct data to playerinfo to match the way it is done in the training data.
     if p1 < p2:
+        picked_df[p1].loc[0] = 1
+        picked_df[p2].loc[0] = 2
+
         # Making p1 Player 1
         if p1 in list(players_df['full_name']):
             picked_df['p1_weight_kg'].loc[i] = players_df.loc[players_df['full_name'] == p1, 'weight_kg'].iloc[0]
@@ -102,6 +104,8 @@ def make_prediction(model):
             picked_df['p2_backhand'].loc[i] = players_df.loc[players_df['full_name'] == p2, 'backhand'].iloc[0]
 
     else:
+        picked_df[p1].loc[0] = 2
+        picked_df[p2].loc[0] = 1
         # Making p2 Player 1
         if p2 in list(players_df['full_name']):
             picked_df['p1_weight_kg'].loc[i] = players_df.loc[players_df['full_name'] == p2, 'weight_kg'].iloc[0]
@@ -126,7 +130,10 @@ def make_prediction(model):
     predictions = model.predict(picked_dataset)
 
     #Show results
-    print(p1, 'Win chance against', p2, 'on', surface, 'court: {:.2%}'.format(predictions[0][0]))
+    if p1 < p2:
+        print(p1, 'Win chance against', p2, 'on', surface, 'court: {:.2%}'.format(predictions[0][0]))
+    else:
+        print(p2, 'Win chance against', p1, 'on', surface, 'court: {:.2%}'.format(predictions[0][0]))
 
 def download_and_save():
     all_games_path = 'https://query.data.world/s/hwr7vh7cfuhbbr3xmddeyc4di2jk5r' # Url for games data
@@ -206,12 +213,12 @@ def save_fulldata():
 
     # Adding players for games
     for i, winner, loser in zip(range(games_df.shape[0]), games_df['winner'], games_df['loser']):
-        full_df[winner].loc[i] = 1
-        full_df[loser].loc[i] = 1
 
         # Making player 1 be player who comes aplhabetically first and player 2 is the alphabetically second
         # Player 1 will be 1 on winner column and player 2 is 0
         if winner < loser:
+            full_df[winner].loc[i] = 1
+            full_df[loser].loc[i] = 2
             full_df['winner'].loc[i] = 1
 
             # Game points
@@ -247,6 +254,8 @@ def save_fulldata():
                 full_df['p2_backhand'].loc[i] = players_df.loc[players_df['full_name'] == loser, 'backhand'].iloc[0]
 
         else:
+            full_df[winner].loc[i] = 2
+            full_df[loser].loc[i] = 1
             full_df['winner'].loc[i] = 0
 
             # Game points
