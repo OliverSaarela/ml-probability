@@ -9,7 +9,6 @@ HOST_NAME = 'localhost'
 PORT_NUMBER = 8080
 
 if __name__ == "__main__":
-    #model = data.main()
     httpd = HTTPServer((HOST_NAME, PORT_NUMBER), Server)
     print(time.asctime(), 'Server UP - %s:%s' % (HOST_NAME, PORT_NUMBER))
     try:

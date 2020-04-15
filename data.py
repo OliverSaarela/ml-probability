@@ -18,12 +18,6 @@ def main():
     if modelupdate is 'y':
         train_and_save_model()
 
-    model = tf.keras.models.load_model('./data/saved_model.h5')
-    while True:
-        cont = input('Do you want to predict? Default y. y/n: ')
-        if cont is 'n':
-            break
-        make_prediction(model)
 
 def get_compiled_model():
         model = tf.keras.Sequential([
@@ -66,7 +60,7 @@ def train_and_save_model():
 
     model.save('./data/saved_model.h5')
 
-def make_prediction(model):
+def make_prediction(model, p1, p2, surface):
     full_df = pd.read_csv('./data/full_data.csv')
     players_df = pd.read_csv('./data/player_data.csv')
 
@@ -79,13 +73,11 @@ def make_prediction(model):
 
     picked_df = pd.DataFrame(columns=full_df.columns)
     picked_df.loc[0] = VALUES
-    print(picked_df)
+    #print(picked_df)
 
     
 
-    p1 = str(input('Name Player 1: '))
-    p2 = str(input('Name Player 2: '))
-    surface = str(input('Name surface: '))
+
     picked_df['surface_' + surface].loc[0] = 1
 
     # Adding correct data to playerinfo to match the way it is done in the training data.
@@ -133,11 +125,14 @@ def make_prediction(model):
 
     predictions = model.predict(picked_dataset)
 
-    #Show results
+    
+    #Return results
+    result = ""
     if p1 < p2:
-        print(p1, 'Win chance against', p2, 'on', surface, 'court: {:.2%}'.format(predictions[0][0]))
+        result = p1, 'Win chance against', p2, 'on', surface, 'court: {:.2%}'.format(predictions[0][0])
     else:
-        print(p2, 'Win chance against', p1, 'on', surface, 'court: {:.2%}'.format(predictions[0][0]))
+        result = p2, 'Win chance against', p1, 'on', surface, 'court: {:.2%}'.format(predictions[0][0])
+    return result
 
 def download_and_save():
     all_games_path = 'https://query.data.world/s/hwr7vh7cfuhbbr3xmddeyc4di2jk5r' # Url for games data

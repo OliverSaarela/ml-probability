@@ -2,11 +2,11 @@
 
 from http.server import BaseHTTPRequestHandler
 import json
-import data
+import data_server_interface
 
 
 class Server(BaseHTTPRequestHandler):
-    model = data.main()
+
         
     def _set_headers(self):
         self.send_response(200)
@@ -28,16 +28,14 @@ class Server(BaseHTTPRequestHandler):
         postdata = json.loads(self.rfile.read(lenght))
         
         #Make a predicton
-        prediction = data.make_prediction(self.model, postdata["player1"], postdata["player2"], postdata["surface"])
+        prediction = data_server_interface.get_prediction(postdata["player1"], postdata["player2"], postdata["surface"])
         #print(prediction)
         
-        #Convert to right type
-        prediction = prediction.tolist()
+        #Make to json
         posting = bytes(json.dumps(prediction), "UTF-8")
         
         #Send response
-        # respose is player1 win chance in format
-        # [[0.20999354]]
+
         self._set_headers() 
         self.wfile.write(posting)
 
