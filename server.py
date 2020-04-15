@@ -20,8 +20,8 @@ class Server(BaseHTTPRequestHandler):
         #Reads json posted to server
         #format is 
         # {
-	    #   "player1": "Nadal R.",
-	    #   "player2": "Federer R.",
+	    #   "player1": "Nadal R",
+	    #   "player2": "Federer R",
 	    #   "surface": "Hard"
         # }
         lenght = int(self.headers.get('content-length'))

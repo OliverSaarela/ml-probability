@@ -18,19 +18,21 @@ def main():
     if modelupdate is 'y':
         train_and_save_model()
 
+    save_picked_data()
+
 
 def get_compiled_model():
-        model = tf.keras.Sequential([
-            tf.keras.layers.Dense(64, activation='relu', input_shape=(10585,)),
-            tf.keras.layers.Dense(64, activation='relu'),
-            tf.keras.layers.Dense(1, activation='sigmoid')
-        ])
+    model = tf.keras.Sequential([
+        tf.keras.layers.Dense(64, activation='relu', input_shape=(10585,)),
+        tf.keras.layers.Dense(64, activation='relu'),
+        tf.keras.layers.Dense(1, activation='sigmoid')
+    ])
 
-        model.compile(optimizer='adam',
-                        loss=tf.keras.losses.BinaryCrossentropy(from_logits=True),
-                        metrics=['accuracy']
-                    )
-        return model
+    model.compile(optimizer='adam',
+                    loss=tf.keras.losses.BinaryCrossentropy(from_logits=True),
+                    metrics=['accuracy']
+                )
+    return model
 
 def train_and_save_model():
     full_df = pd.read_csv('./data/full_data.csv')
@@ -61,22 +63,9 @@ def train_and_save_model():
     model.save('./data/saved_model.h5')
 
 def make_prediction(model, p1, p2, surface):
-    full_df = pd.read_csv('./data/full_data.csv')
     players_df = pd.read_csv('./data/player_data.csv')
 
-    # Pick players to test
-    VALUES = []
-    for i in range(len(full_df.columns)):
-        VALUES.append(0)
-
-    VALUES = np.array(VALUES)
-
-    picked_df = pd.DataFrame(columns=full_df.columns)
-    picked_df.loc[0] = VALUES
-    #print(picked_df)
-
-    
-
+    picked_df = pd.read_csv('./data/picked_data.csv')
 
     picked_df['surface_' + surface].loc[0] = 1
 
@@ -87,34 +76,34 @@ def make_prediction(model, p1, p2, surface):
 
         # Making p1 Player 1
         if p1 in list(players_df['full_name']):
-            picked_df['p1_weight_kg'].loc[i] = players_df.loc[players_df['full_name'] == p1, 'weight_kg'].iloc[0]
-            picked_df['p1_height_cm'].loc[i] = players_df.loc[players_df['full_name'] == p1, 'height_cm'].iloc[0]
-            picked_df['p1_handedness'].loc[i] = players_df.loc[players_df['full_name'] == p1, 'handedness'].iloc[0]
-            picked_df['p1_backhand'].loc[i] = players_df.loc[players_df['full_name'] == p1, 'backhand'].iloc[0]
+            picked_df['p1_weight_kg'].loc[0] = players_df.loc[players_df['full_name'] == p1, 'weight_kg'].iloc[0]
+            picked_df['p1_height_cm'].loc[0] = players_df.loc[players_df['full_name'] == p1, 'height_cm'].iloc[0]
+            picked_df['p1_handedness'].loc[0] = players_df.loc[players_df['full_name'] == p1, 'handedness'].iloc[0]
+            picked_df['p1_backhand'].loc[0] = players_df.loc[players_df['full_name'] == p1, 'backhand'].iloc[0]
         
         # Making p2 Player 2
         if p2 in list(players_df['full_name']):
-            picked_df['p2_weight_kg'].loc[i] = players_df.loc[players_df['full_name'] == p2, 'weight_kg'].iloc[0]
-            picked_df['p2_height_cm'].loc[i] = players_df.loc[players_df['full_name'] == p2, 'height_cm'].iloc[0]
-            picked_df['p2_handedness'].loc[i] = players_df.loc[players_df['full_name'] == p2, 'handedness'].iloc[0]
-            picked_df['p2_backhand'].loc[i] = players_df.loc[players_df['full_name'] == p2, 'backhand'].iloc[0]
+            picked_df['p2_weight_kg'].loc[0] = players_df.loc[players_df['full_name'] == p2, 'weight_kg'].iloc[0]
+            picked_df['p2_height_cm'].loc[0] = players_df.loc[players_df['full_name'] == p2, 'height_cm'].iloc[0]
+            picked_df['p2_handedness'].loc[0] = players_df.loc[players_df['full_name'] == p2, 'handedness'].iloc[0]
+            picked_df['p2_backhand'].loc[0] = players_df.loc[players_df['full_name'] == p2, 'backhand'].iloc[0]
 
     else:
         picked_df[p1].loc[0] = 2
         picked_df[p2].loc[0] = 1
         # Making p2 Player 1
         if p2 in list(players_df['full_name']):
-            picked_df['p1_weight_kg'].loc[i] = players_df.loc[players_df['full_name'] == p2, 'weight_kg'].iloc[0]
-            picked_df['p1_height_cm'].loc[i] = players_df.loc[players_df['full_name'] == p2, 'height_cm'].iloc[0]
-            picked_df['p1_handedness'].loc[i] = players_df.loc[players_df['full_name'] == p2, 'handedness'].iloc[0]
-            picked_df['p1_backhand'].loc[i] = players_df.loc[players_df['full_name'] == p2, 'backhand'].iloc[0]
+            picked_df['p1_weight_kg'].loc[0] = players_df.loc[players_df['full_name'] == p2, 'weight_kg'].iloc[0]
+            picked_df['p1_height_cm'].loc[0] = players_df.loc[players_df['full_name'] == p2, 'height_cm'].iloc[0]
+            picked_df['p1_handedness'].loc[0] = players_df.loc[players_df['full_name'] == p2, 'handedness'].iloc[0]
+            picked_df['p1_backhand'].loc[0] = players_df.loc[players_df['full_name'] == p2, 'backhand'].iloc[0]
             
         # Making p1 Player 2
         if p1 in list(players_df['full_name']):
-            picked_df['p2_weight_kg'].loc[i] = players_df.loc[players_df['full_name'] == p1, 'weight_kg'].iloc[0]
-            picked_df['p2_height_cm'].loc[i] = players_df.loc[players_df['full_name'] == p1, 'height_cm'].iloc[0]
-            picked_df['p2_handedness'].loc[i] = players_df.loc[players_df['full_name'] == p1, 'handedness'].iloc[0]
-            picked_df['p2_backhand'].loc[i] = players_df.loc[players_df['full_name'] == p1, 'backhand'].iloc[0]
+            picked_df['p2_weight_kg'].loc[0] = players_df.loc[players_df['full_name'] == p1, 'weight_kg'].iloc[0]
+            picked_df['p2_height_cm'].loc[0] = players_df.loc[players_df['full_name'] == p1, 'height_cm'].iloc[0]
+            picked_df['p2_handedness'].loc[0] = players_df.loc[players_df['full_name'] == p1, 'handedness'].iloc[0]
+            picked_df['p2_backhand'].loc[0] = players_df.loc[players_df['full_name'] == p1, 'backhand'].iloc[0]
     
     picked_df = picked_df.apply(pd.to_numeric)
 
@@ -299,6 +288,21 @@ def save_fulldata():
     print(full_df)
 
     full_df.to_csv('./data/full_data.csv', index=False)
+
+
+def save_picked_data():
+    full_df = pd.read_csv('./data/full_data.csv')
+    # Pick players to test
+    VALUES = []
+    for i in range(len(full_df.columns)):
+        VALUES.append(0)
+
+    VALUES = np.array(VALUES)
+
+    picked_df = pd.DataFrame(columns=full_df.columns)
+    picked_df.loc[0] = VALUES
+    picked_df.to_csv('./data/picked_data.csv', index=False)
+
 
 
 if __name__ == "__main__":
