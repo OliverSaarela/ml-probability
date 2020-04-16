@@ -3,6 +3,7 @@
 from http.server import BaseHTTPRequestHandler
 import json
 import data_server_interface
+import cgi
 
 
 class Server(BaseHTTPRequestHandler):
@@ -10,13 +11,22 @@ class Server(BaseHTTPRequestHandler):
         
     def _set_headers(self):
         self.send_response(200)
-        self.send_header('Content-type', 'application/json')
+        self.send_header('Content-Type', 'application/json')
         self.end_headers()
     
     def do_HEAD(self):
         self._set_headers()
 
     def do_POST(self):
+
+        ctype, pdict = cgi.parse_header(self.headers.get('Content-Type'))
+        
+        # refuse to receive non-json content
+        if ctype != 'application/json':
+            self.send_response(400)
+            self.end_headers()
+            return
+
         #Reads json posted to server
         #format is 
         # {
