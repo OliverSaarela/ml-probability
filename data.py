@@ -18,14 +18,15 @@ def main():
     if modelupdate is 'y':
         train_and_save_model()
 
-    #save_picked_data()
+    updatepicked = input('Do you want to update picked data? Needs to be done only once Default n. y/n: ')
+    if updatepicked is 'y':
+        save_picked_data()
 
 
 def get_compiled_model():
     model = tf.keras.Sequential([
-        tf.keras.layers.Dense(64, activation='relu', input_shape=(10585,)),
-        tf.keras.layers.Dense(64, activation='relu'),
-        tf.keras.layers.Dropout(0.2),
+        tf.keras.layers.Dense(8, activation='relu', input_shape=(10585,)),
+        tf.keras.layers.Dense(8, activation='relu'),
         tf.keras.layers.Dense(1, activation='sigmoid')
     ])
 
