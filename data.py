@@ -118,9 +118,9 @@ def make_prediction(model, p1, p2, surface):
     #Return results
     result = ""
     if p1 < p2:
-        result = '{} Win chance against {} on {} court: {:.2%}'.format(p1, p2, surface, predictions[0][0])
+        result = {'result':'{} Win chance against {} on {} court: {:.2%}'.format(p1, p2, surface, predictions[0][0])}
     else:
-        result = '{} Win chance against {} on {} court: {:.2%}'.format(p2, p1, surface, predictions[0][0])
+        result = {'result':'{} Win chance against {} on {} court: {:.2%}'.format(p2, p1, surface, predictions[0][0])}
     return result
 
 def download_and_save():
