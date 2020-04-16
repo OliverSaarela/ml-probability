@@ -18,7 +18,7 @@ def main():
     if modelupdate is 'y':
         train_and_save_model()
 
-    save_picked_data()
+    #save_picked_data()
 
 
 def get_compiled_model():
