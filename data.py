@@ -118,9 +118,9 @@ def make_prediction(model, p1, p2, surface):
     #Return results
     result = ""
     if p1 < p2:
-        result = p1, 'Win chance against', p2, 'on', surface, 'court: {:.2%}'.format(predictions[0][0])
+        result = '{} Win chance against {} on {} court: {:.2%}'.format(p1, p2, surface, predictions[0][0])
     else:
-        result = p2, 'Win chance against', p1, 'on', surface, 'court: {:.2%}'.format(predictions[0][0])
+        result = '{} Win chance against {} on {} court: {:.2%}'.format(p2, p1, surface, predictions[0][0])
     return result
 
 def download_and_save():
@@ -302,7 +302,6 @@ def save_picked_data():
     picked_df = pd.DataFrame(columns=full_df.columns)
     picked_df.loc[0] = VALUES
     picked_df.to_csv('./data/picked_data.csv', index=False)
-
 
 
 if __name__ == "__main__":
