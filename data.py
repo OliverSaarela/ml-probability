@@ -25,8 +25,8 @@ def main():
 
 def get_compiled_model():
     model = tf.keras.Sequential([
-        tf.keras.layers.Dense(8, activation='relu', input_shape=(10585,)),
-        tf.keras.layers.Dense(8, activation='relu'),
+        tf.keras.layers.Dense(4, activation='relu', input_shape=(10585,)),
+        tf.keras.layers.Dense(4, activation='relu'),
         tf.keras.layers.Dense(1, activation='sigmoid')
     ])
 
@@ -305,6 +305,17 @@ def save_picked_data():
     picked_df.loc[0] = VALUES
     picked_df.to_csv('./data/picked_data.csv', index=False)
 
+def get_all_players():
+    player_df = pd.read_csv('./data/picked_data.csv')
+
+    players = list(player_df.columns)
+
+    exclude = ['p1_weight_kg', 'p2_weight_kg', 'p1_height_cm', 'p2_height_cm', 'p1_handedness', 'p2_handedness', 'p1_backhand', 'p2_backhand', 'p1_game1', 'p2_game1', 'p1_game2', 'p2_game2', 'p1_game3', 'p2_game3', 'p1_game4', 'p2_game4', 'p1_game5', 'p2_game5', 'p1_sets', 'p2_sets', 'winner', 'surface_Carpet', 'surface_Clay', 'surface_Grass', 'surface_Hard', 'Unknown U', 'Unknown1 U', 'Unknown10 U', 'Unknown2 U', 'Unknown3 U', 'Unknown4 U', 'Unknown5 U', 'Unknown6 U', 'Unknown7 U', 'Unknown8 U', 'Unknown9 U']
+    
+    for name in exclude:
+        players.remove(name)
+
+    return players
 
 if __name__ == "__main__":
     main()
