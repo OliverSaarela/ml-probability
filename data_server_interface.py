@@ -10,3 +10,6 @@ def get_prediction(p1, p2, surface):
 
     return prediction
     
+def get_players():
+    players = data.get_all_players()
+    return players

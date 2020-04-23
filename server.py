@@ -50,20 +50,10 @@ class Server(BaseHTTPRequestHandler):
         self.wfile.write(posting)
 
     def do_GET(self):
-        self.respond()
-
-    def handle_http(self):
-        response_content = ""
-
-        cont = {
-            "Json" : "test"
-        }
-        response_content = json.dumps(cont)
+        
+        players = data_server_interface.get_players()
+        response_content = bytes(json.dumps(players), "UTF-8")
 
         self._set_headers()
-        return bytes(response_content, "UTF-8")
-
-
-    def respond(self):
-        content = self.handle_http()
-        self.wfile.write(content)
+        self.wfile.write(response_content)
+        
