@@ -3,6 +3,11 @@ data/full_data.csv
 data/game_data.csv
 data/player_data.csv
 
+#CSV
+data/full_data.csv
+data/game_data.csv
+data/player_data.csv
+
 ### Python ###
 # Byte-compiled / optimized / DLL files
 __pycache__/
