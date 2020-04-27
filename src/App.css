@@ -1,0 +1,69 @@
+body {
+  background-color: #00933A;
+}
+
+.court {
+  border: solid 80px #00933A;
+  width: 780px;
+  height: 360px;
+  display: block;
+  margin: 100px auto;
+
+
+}
+.court__grid {
+  display: grid;
+  height: 100%;
+  border: solid 2px white;
+  grid-template-columns: repeat(26, 1fr);
+  grid-template-rows: repeat(8, 1fr);
+}
+.court__cell {
+  background: #004B8F;
+  box-shadow: inset 0 0 0 2px white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-size: 14px;
+  font-family: Georgia;
+  font-style: italic;
+  text-align: center;
+}
+.court__alley--top-left {
+  grid-column: 1 / 14;
+}
+.court__alley--top-right {
+  grid-column: 14 / 27;
+}
+.court__nml--left {
+  grid-row: 2 / 8;
+  grid-column: 1 / 7;
+}
+
+.court__ad--left {
+  grid-row: 2 / 5;
+  grid-column: 7 / 14;
+}
+.court__ad--right {
+  grid-row: 2 / 5;
+  grid-column: 14 / 21;
+}
+.court__dc--left {
+  grid-row: 5 / 8;
+  grid-column: 7 / 14;
+}
+.court__dc--right {
+  grid-row: 5 / 8;
+  grid-column: 14 / 21;
+}
+.court__nml--right {
+  grid-row: 2 / 8;
+  grid-column: 21 / 27;
+}
+.court__alley--bottom-left {
+  grid-column: 1 / 14;
+}
+.court__alley--bottom-right {
+  grid-column: 14 / 27;
+}
