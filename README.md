@@ -17,30 +17,30 @@ The original data is from https://data.world/tylerudite/atp-match-data and is li
 [![Stargazers][stars-shield]][stars-url]
 [![Issues][issues-shield]][issues-url]
 [![MIT License][license-shield]][license-url]
-[![LinkedIn][linkedin-shield]][linkedin-url]
+
 
 
 
 <!-- PROJECT LOGO -->
 <br />
 <p align="center">
-  <a href="https://github.com/github_username/repo">
+  <a href="https://github.com/OliverSaarela/ml-probability">
     <img src="images/logo.png" alt="Logo" width="80" height="80">
   </a>
 
-  <h3 align="center">YOUR_TITLE</h3>
+  <h3 align="center">Tennis match probabilities</h3>
 
   <p align="center">
-    YOUR_SHORT_DESCRIPTION
+    Predicts men's atp match outcomes using tensorflow machine learning.
     <br />
-    <a href="https://github.com/github_username/repo"><strong>Explore the docs »</strong></a>
+    <a href="https://github.com/OliverSaarela/ml-probability"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="https://github.com/github_username/repo">View Demo</a>
+    <a href="https://github.com/OliverSaarela/ml-probability">View Demo</a>
     ·
-    <a href="https://github.com/github_username/repo/issues">Report Bug</a>
+    <a href="https://github.com/OliverSaarela/ml-probability/issues">ml-probabilityrt Bug</a>
     ·
-    <a href="https://github.com/github_username/repo/issues">Request Feature</a>
+    <a href="https://github.com/OliverSaarela/ml-probability/issues">Request Feature</a>
   </p>
 </p>
 
@@ -68,16 +68,12 @@ The original data is from https://data.world/tylerudite/atp-match-data and is li
 
 [![Product Name Screen Shot][product-screenshot]](https://example.com)
 
-Here's a blank template to get started:
-**To avoid retyping too much info. Do a search and replace with your text editor for the following:**
-`github_username`, `repo`, `twitter_handle`, `email`
-
 
 ### Built With
 
-* []()
-* []()
-* []()
+* [Python](https://www.python.org/)
+* [React](https://reactjs.org/)
+* [TensorFlow](https://www.tensorflow.org/)
 
 
 
@@ -98,11 +94,16 @@ npm install npm@latest -g
  
 1. Clone the repo
 ```sh
-git clone https://github.com/github_username/repo.git
+git clone https://github.com/OliverSaarela/ml-probability.git
 ```
 2. Install NPM packages
 ```sh
 npm install
+```
+
+3. Install Python packages
+```sh
+conda create --name <env> --file requirements.txt OR conda install --file requirements.txt (if you already have an environment)
 ```
 
 
@@ -119,7 +120,7 @@ _For more examples, please refer to the [Documentation](https://example.com)_
 <!-- ROADMAP -->
 ## Roadmap
 
-See the [open issues](https://github.com/github_username/repo/issues) for a list of proposed features (and known issues).
+See the [open issues](https://github.com/OliverSaarela/ml-probability/issues) for a list of proposed features (and known issues).
 
 
 
@@ -146,9 +147,7 @@ Distributed under the MIT License. See `LICENSE` for more information.
 <!-- CONTACT -->
 ## Contact
 
-Your Name - [@twitter_handle](https://twitter.com/twitter_handle) - email
-
-Project Link: [https://github.com/github_username/repo](https://github.com/github_username/repo)
+Project Link: [https://github.com/OliverSaarela/ml-probability](https://github.com/OliverSaarela/ml-probability)
 
 
 
