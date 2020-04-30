@@ -1,8 +1,3 @@
-# Calculating probabilty of winning
-A learning project for machine learning.
-Using data of tennis games to predict winners.
-The original data is from https://data.world/tylerudite/atp-match-data and is licensed for the public domain.
-
 
 <!-- PROJECT SHIELDS -->
 <!--
@@ -56,7 +51,6 @@ The original data is from https://data.world/tylerudite/atp-match-data and is li
   * [Installation](#installation)
 * [Usage](#usage)
 * [Roadmap](#roadmap)
-* [Contributing](#contributing)
 * [License](#license)
 * [Contact](#contact)
 * [Acknowledgements](#acknowledgements)
@@ -68,6 +62,8 @@ The original data is from https://data.world/tylerudite/atp-match-data and is li
 
 [![Product Name Screen Shot][product-screenshot]](https://example.com)
 
+A learning project for machine learning.
+Using data of tennis games to predict winners.
 
 ### Built With
 
@@ -84,11 +80,12 @@ To get a local copy up and running follow these simple steps.
 
 ### Prerequisites
 
-This is an example of how to list things you need to use the software and how to install them.
+This is an example of how to use the software and how to install it.
 * npm
 ```sh
 npm install npm@latest -g
 ```
+* [python 3.7.6](https://www.python.org/)
 
 ### Installation
  
@@ -96,6 +93,7 @@ npm install npm@latest -g
 ```sh
 git clone https://github.com/OliverSaarela/ml-probability.git
 ```
+
 2. Install NPM packages
 ```sh
 npm install
@@ -103,10 +101,12 @@ npm install
 
 3. Install Python packages
 ```sh
-conda create --name <env> --file requirements.txt OR conda install --file requirements.txt (if you already have an environment)
+conda create --name <env> --file requirements.txt
 ```
-
-
+Or if you already have an environment
+```sh
+conda install --file requirements.txt
+```
 
 <!-- USAGE EXAMPLES -->
 ## Usage
@@ -124,24 +124,10 @@ See the [open issues](https://github.com/OliverSaarela/ml-probability/issues) fo
 
 
 
-<!-- CONTRIBUTING -->
-## Contributing
-
-Contributions are what make the open source community such an amazing place to be learn, inspire, and create. Any contributions you make are **greatly appreciated**.
-
-1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the Branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-
-
 <!-- LICENSE -->
 ## License
 
 Distributed under the MIT License. See `LICENSE` for more information.
-
 
 
 <!-- CONTACT -->
@@ -154,12 +140,8 @@ Project Link: [https://github.com/OliverSaarela/ml-probability](https://github.c
 <!-- ACKNOWLEDGEMENTS -->
 ## Acknowledgements
 
-* []()
-* []()
-* []()
-
-
-
+### Data
+* [Tennis match and player data](https://data.world/tylerudite/atp-match-data)
 
 
 <!-- MARKDOWN LINKS & IMAGES -->
