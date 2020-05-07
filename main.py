@@ -11,7 +11,7 @@ PORT_NUMBER = 8080
 if __name__ == "__main__":
     httpd = HTTPServer((HOST_NAME, PORT_NUMBER), Server)
     print(time.asctime(), 'Server UP - %s:%s' % (HOST_NAME, PORT_NUMBER))
-    try:
+    try: # Starts the server
         httpd.serve_forever()
     except KeyboardInterrupt:
         pass
