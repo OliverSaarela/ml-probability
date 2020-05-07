@@ -20,7 +20,7 @@
 <br />
 <p align="center">
   <a href="https://github.com/OliverSaarela/ml-probability">
-    <img src="images/logo.png" alt="Logo" width="80" height="80">
+    <img src="img/logo.png" alt="Logo" width="80" height="80">
   </a>
 
   <h3 align="center">Tennis match probabilities</h3>
@@ -64,6 +64,8 @@
 
 A learning project for machine learning.
 Using data of tennis games to predict winners.
+
+The project contains a HTTP server and a React site using that server to give prediction to users.
 
 ### Built With
 
@@ -110,12 +112,36 @@ conda install --file requirements.txt
 
 <!-- USAGE EXAMPLES -->
 ## Usage
+### Setting up
+First to download the needed files run `data.py` file. Say yes to updating data. You can also retrain the model and regenerate the empty `picked_data.csv` used in making prediction this way.
+![data_console](img/data_console.JPG)
+### Server
+To start the server run the `main.py` file.
+The server starts on http://localhost:8080 by default. This can be changed by changing the constants in `main.py`.
 
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
+An HTTP GET request returns a list of players in JSON.
+An HTTP POST expects a JSON object in the form of
+```json
+{
+	"player1": "Nadal R",
+	"player2": "Federer R",
+	"surface": "Hard"
+}
+```
+and it returns a prediction of match win chance as
+```json
+{
+    "result": "Federer R Win chance against Nadal R on Hard court: 28.42%"
+}
+```
 
-_For more examples, please refer to the [Documentation](https://example.com)_
-
-
+To shut down the server you need to a Keyboard Interrupt `Ctrl + C` on the terminal running it.
+### UI
+To start the user interface run the command
+```sh
+npm start
+```
+which will start react. By default it is usually on http://localhost:3000.
 
 <!-- ROADMAP -->
 ## Roadmap
