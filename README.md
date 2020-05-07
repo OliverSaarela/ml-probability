@@ -119,7 +119,7 @@ First to download the needed files run `data.py` file. Say yes to updating data.
 To start the server run the `main.py` file.
 The server starts on http://localhost:8080 by default. This can be changed by changing the constants in `main.py`.
 
-An HTTP GET request returns a list of players in JSON.
+An HTTP GET request returns a list of players in JSON.  
 An HTTP POST expects a JSON object in the form of
 ```json
 {
