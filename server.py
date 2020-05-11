@@ -53,12 +53,10 @@ class Server (BaseHTTPRequestHandler):
         # }
         lenght = int(self.headers.get('content-length','Access-Control-Allow-Origin'))
         postdata = json.loads(self.rfile.read(lenght))
-        
+
         #Make a predicton
         prediction = data_server_interface.get_prediction(postdata["player1"], postdata["player2"], postdata["surface"])
-        #print(prediction)
-        
-        #Make to json
+        #Make to JSON
         posting = bytes(json.dumps(prediction), "UTF-8")
         
         #Send response
@@ -66,11 +64,14 @@ class Server (BaseHTTPRequestHandler):
         self._set_headers() 
         self.wfile.write(posting)
 
+    # On http GET returns list of players as JSON
     def do_GET(self):
-        
+        # Get player list
         players = data_server_interface.get_players()
+        #Make to JSON
         response_content = bytes(json.dumps(players), "UTF-8")
 
+        # Send response
         self._set_headers()
         self.wfile.write(response_content)
         
