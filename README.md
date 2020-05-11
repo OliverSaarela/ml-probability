@@ -33,7 +33,7 @@
     <br />
     <a href="https://github.com/OliverSaarela/ml-probability">View Demo</a>
     ·
-    <a href="https://github.com/OliverSaarela/ml-probability/issues">ml-probabilityrt Bug</a>
+    <a href="https://github.com/OliverSaarela/ml-probability/issues">Report Bug</a>
     ·
     <a href="https://github.com/OliverSaarela/ml-probability/issues">Request Feature</a>
   </p>
