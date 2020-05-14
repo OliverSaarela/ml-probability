@@ -137,7 +137,8 @@ function App() {
           <Select input={<Input />} value={surface} onChange={updateSurface}>
             <MenuItem value="Clay">Clay</MenuItem>
             <MenuItem value="Hard">Hard</MenuItem>
-            <MenuItem value="Soft">Soft</MenuItem>
+            <MenuItem value="Soft">Grass</MenuItem>
+            <MenuItem value="Soft">Carpet</MenuItem>
             </Select>
 
           </div>
