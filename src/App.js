@@ -19,62 +19,53 @@ function App() {
 
 
 
-  var playerlist = ["monkey brain","goes","heehoo","peenuts"];
-  var pocket;
+  var playerlist = [];
 
   var [statelist, setStatelist] = useState([]);
 
-  var [player1, setPlayer1] = useState("Abel M");
-  var [player2, setPlayer2] = useState("Abe T");
-  var [surface, setSurface] = useState("Clay");
+  var [player1, setPlayer1] = useState("Player1");
+  var [player2, setPlayer2] = useState("player2");
+  var [surface, setSurface] = useState("Hard");
 
   var respString;
   var [answer, setAnswer] = useState();
 
 
-  function testprint() {
-    answer = respString;
-    console.log(answer);
-  }
+  //function for sending player and surface info to the server and receiving the matchwinner data
+  function dopost(){
 
-  function testprintplayers() {
-    console.log(statelist);
-    setStatelist(playerlist);
-  }
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json", "Access-Control-Allow-Headers");
 
+    var raw = JSON.stringify({
+      'player1': player1,
+      'player2': player2,
+      'surface': surface,
+    });
 
+    var requestOptions = {
+      method: 'POST',
+      headers: myHeaders,
+      body: raw,
+    };
 
+    fetch("http://localhost:8080", requestOptions)
 
-function dopost(){
+      .then(console.log("Fetching Winner..."))
+      .then(setAnswer("Fetching Winner..."))
 
-  var myHeaders = new Headers();
-  myHeaders.append("Content-Type", "application/json", "Access-Control-Allow-Headers");
+      .then(response => response.json().then(data => {
+        respString = data.result
+      }))
 
-  var raw = JSON.stringify({
-    'player1': player1,
-    'player2': player2,
-    'surface': surface,
-  });
+      .then(console.log(respString))
+      .catch(error => console.log('error', error))
 
-  var requestOptions = {
-    method: 'POST',
-    headers: myHeaders,
-    body: raw,
-  };
+      .then(display)
 
-  fetch("http://localhost:8080", requestOptions)
+    }
 
-    .then(console.log("Fetching Winner..."))
-
-    .then(response => response.json().then(data => {
-      respString = data.result
-    }))
-    .then(console.log(respString))
-    .catch(error => console.log('error', error))
-
-
-  }
-
+    //Function for getting the list of players from the server
     function doget() {
       var myHeaders = new Headers();
       myHeaders.append("Content-Type", "application/json", "Access-Control-Allow-Headers");
@@ -93,28 +84,9 @@ function dopost(){
         .then(result => console.log(result))
         .catch(error => console.log('error', error))
 
-
-
       }
 
-
-      var myHeaders = new Headers();
-      myHeaders.append("Content-Type", "application/json", "Access-Control-Allow-Headers");
-
-      var requestOptions = {
-        method: 'GET',
-        headers: myHeaders,
-      };
-
-      fetch("http://localhost:8080", requestOptions)
-        .then(response => response.json().then(data => {
-          for(let i = 0; i < data.length; i++){
-        //  pocket = {"pname" :data[i]}
-          playerlist.push(data[i])
-        }}))
-        .catch(error => console.log('error', error));
-
-
+        //eventhandlers for updating the variables for calculating the winner
       const updateplayer1 = (event) => {
         setPlayer1(event.target.value);
       };
@@ -127,14 +99,17 @@ function dopost(){
         setSurface(event.target.value);
       };
 
-      function calculate() {
 
 
-        dopost()
+      function display(){
         setAnswer(respString)
-
+      }
+      function calculate() {
+        dopost()
+        display()
       }
 
+      doget()
 
 
     return (
@@ -143,54 +118,43 @@ function dopost(){
 
       <div class="court">
         <div class="court__grid">
-          <div class="court__cell court__alley--top-left">
-
-            <Typography variant='p' color='inherit'>{"Open console to see whats going on"}</Typography>
-
-          </div>
-          <div class="court__cell court__alley--top-right">39 ft. &times; 4.5ft (175.5 sq. ft.)</div>
+        <div class="court__cell court__alley--top-left">Tennismatch calcunator 3000</div>
+          <div class="court__cell court__alley--top-right">"Patent not pending"</div>
           <div class="court__cell court__nml--left">Choose your players and fieldtype</div>
           <div class="court__cell court__ad--left">
 
+
           <Select input={<Input />} value={player1} onChange={updateplayer1} onOpen={() => setStatelist(playerlist)}>
-          {statelist.map((name) => (
-          <MenuItem id="player1select" key={name} value={name} >
-            {name}
-          </MenuItem>
-          ))}
+            {statelist.map((name) => (
+            <MenuItem id="player1select" key={name} value={name}>{name}</MenuItem>
+            ))}
           </Select>
 
           </div>
           <div class="court__cell court__ad--right">
 
+
           <Select input={<Input />} value={surface} onChange={updateSurface}>
-          <MenuItem value="Clay">Clay</MenuItem>
-          <MenuItem value="Hard">Hard</MenuItem>
-          <MenuItem value="Soft">Soft</MenuItem>
-          </Select>
+            <MenuItem value="Clay">Clay</MenuItem>
+            <MenuItem value="Hard">Hard</MenuItem>
+            <MenuItem value="Soft">Soft</MenuItem>
+            </Select>
 
           </div>
           <div class="court__cell court__dc--left">
 
-          <Select input={<Input />} value={player2} onChange={updateplayer2} onOpen={() => setStatelist(playerlist)}>
-          {statelist.map((name) => (
-          <MenuItem id="player2select" key={name} value={name} >
-            {name}
-          </MenuItem>
-          ))}
-          </Select>
+
+            <Select input={<Input />} value={player2} onChange={updateplayer2} onOpen={() => setStatelist(playerlist)}>
+              {statelist.map((name) => (
+              <MenuItem id="player2select" key={name} value={name}>{name}</MenuItem>
+              ))}
+            </Select>
 
           </div>
-          <div class="court__cell court__dc--right"><Button onClick={testprint}>testprint</Button></div>
-          <div class="court__cell court__nml--right">answer here:<br/>{answer}</div>
-
-
-          <div class="court__cell court__alley--bottom-left">
-            <Button onClick={() => calculate()}>Prepare to be amazed</Button>
-          </div>
-          <div class="court__cell court__alley--bottom-right">
-            <Button onClick={() => calculate()}>Prepare to be amazed</Button>
-          </div>
+          <div class="court__cell court__dc--right"><Button onClick={() => calculate()}>calculate Winner</Button></div>
+          <div class="court__cell court__nml--right">Carefully calculated answer:<br/>{answer}</div>
+          <div class="court__cell court__alley--bottom-left"></div>
+          <div class="court__cell court__alley--bottom-right"></div>
         </div>
       </div>
 

@@ -3,13 +3,11 @@ body {
 }
 
 .court {
-  border: solid 80px #00933A;
+
   width: 780px;
   height: 360px;
-  display: block;
-  margin: 100px auto;
-
-
+  margin: auto;
+  margin-top: 80px;
 
 
 }
