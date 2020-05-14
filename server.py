@@ -1,7 +1,6 @@
 # coding=utf-8
 
 from http.server import BaseHTTPRequestHandler
-from flask_cors import CORS, cross_origin
 import json
 import data_server_interface
 import cgi
