@@ -1,18 +1,9 @@
-import React, { Component, useState, useEffect } from 'react';
-import logo from './logo.svg';
+import React, { useState } from 'react';
 import './App.css';
-import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
-import clsx from 'clsx';
 import Input from '@material-ui/core/Input';
-import InputLabel from '@material-ui/core/InputLabel';
-import FormControl from '@material-ui/core/FormControl';
-import ListItemText from '@material-ui/core/ListItemText';
-import Checkbox from '@material-ui/core/Checkbox';
-import Chip from '@material-ui/core/Chip';
 
 
 function App() {
@@ -137,8 +128,8 @@ function App() {
           <Select input={<Input />} value={surface} onChange={updateSurface}>
             <MenuItem value="Clay">Clay</MenuItem>
             <MenuItem value="Hard">Hard</MenuItem>
-            <MenuItem value="Soft">Grass</MenuItem>
-            <MenuItem value="Soft">Carpet</MenuItem>
+            <MenuItem value="Grass">Grass</MenuItem>
+            <MenuItem value="Carpet">Carpet</MenuItem>
             </Select>
 
           </div>
