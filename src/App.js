@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
 import Button from '@material-ui/core/Button';
 import Select from '@material-ui/core/Select';
@@ -8,9 +8,6 @@ import Input from '@material-ui/core/Input';
 
 function App() {
 
-
-
-    var playerlist = [];
 
     var [statelist, setStatelist] = useState([]);
 
@@ -68,12 +65,7 @@ function App() {
 
         fetch("http://localhost:8080", requestOptions)
             .then(response => response.json()
-            .then(data => {
-                for (let i = 0; i < data.length; i++) {
-                    //  pocket = {"pname" :data[i]}
-                    playerlist.push(data[i])
-                }
-            }))
+            .then(data => setStatelist(data)))
             .then(result => console.log(result))
             .catch(error => console.log('error', error))
 
@@ -102,7 +94,9 @@ function App() {
         display()
     }
 
-    doget()
+    useEffect(() => {
+        doget()
+    },[]);
 
 
     return (
@@ -117,7 +111,7 @@ function App() {
                     <div class="court__cell court__ad--left">
 
 
-                        <Select input={<Input />} value={player1} onChange={updateplayer1} onOpen={() => setStatelist(playerlist)}>
+                        <Select input={<Input />} value={player1} onChange={updateplayer1}>
                             {statelist.map((name) => (
                                 <MenuItem id="player1select" key={name} value={name}>{name}</MenuItem>
                             ))}
@@ -138,7 +132,7 @@ function App() {
                     <div class="court__cell court__dc--left">
 
 
-                        <Select input={<Input />} value={player2} onChange={updateplayer2} onOpen={() => setStatelist(playerlist)}>
+                        <Select input={<Input />} value={player2} onChange={updateplayer2}>
                             {statelist.map((name) => (
                                 <MenuItem id="player2select" key={name} value={name}>{name}</MenuItem>
                             ))}
